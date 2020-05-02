@@ -1,5 +1,11 @@
 /Pacman.class
+<<<<<<< HEAD
 /Wall.class
 /Blank.class
 /Map.class
 /SmallDot.class
+=======
+/runner.class
+.DS_Store
+.classpath
+>>>>>>> c8dcd8d7e148606b3de8da4ac3c0d1f0b76c070a
