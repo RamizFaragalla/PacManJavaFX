@@ -8,25 +8,22 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 public class Pacman extends Application{
-	public GridPane map = new GridPane();
-	public Map m = new Map();
+	private GridPane map = new GridPane();
+	private Map m = new Map();
+	private char[][] grid = m.getGrid();
+	private Character player;
+	private Character enemy1;
+	private Character enemy2;
 
 	public static void main(String[] args) {
 	      // Launch the application.
 	      launch(args);
 	}
 	
-	@Override
-   /**
-    * @param primaryStage
-    * @return void
-    */
+	
 	public void start(Stage primaryStage) {
-		char[][] grid = m.getGrid();
-		fillGridPane(map, grid);
 		
-		
-		//Label l = new Label("hi");
+		update(map, grid);
 		Scene scene = new Scene(map, Color.BLACK);
 		
 		primaryStage.setScene(scene);
@@ -38,7 +35,8 @@ public class Pacman extends Application{
 		primaryStage.show();
 	}
 	
-	public void fillGridPane(GridPane map, char[][] grid) {
+	// KEEP TRACK OF ENEMIES, PACMAN, ETC
+	public void update(GridPane map, char[][] grid) {
 		for(int i = 0; i < m.getRows(); i++) {
 			for(int j = 0; j < m.getCols(); j++) {
 				if(grid[i][j] == 'W') {
@@ -72,8 +70,10 @@ public class Pacman extends Application{
 				}
 				
 				else if(grid[i][j] == '1') {
-					Wall wall = new Wall("images//ghost2.gif");
-					ImageView imageView = wall.getImageView();
+//					Wall wall = new Wall("images//ghost2.gif");
+//					ImageView imageView = wall.getImageView();
+					enemy1 = new Enemy1(i, j);
+					ImageView imageView = enemy1.getImageView();
                     imageView.setX((double)j * m.getWidth());
                     imageView.setY((double)i * m.getWidth());
                     imageView.setFitWidth(m.getWidth());
@@ -82,8 +82,10 @@ public class Pacman extends Application{
 				}
 				
 				else if(grid[i][j] == '2') {
-					Wall wall = new Wall("images//redghost.gif");
-					ImageView imageView = wall.getImageView();
+//					Wall wall = new Wall("images//redghost.gif");
+//					ImageView imageView = wall.getImageView();
+					enemy2 = new Enemy2(i, j);
+					ImageView imageView = enemy2.getImageView();
                     imageView.setX((double)j * m.getWidth());
                     imageView.setY((double)i * m.getWidth());
                     imageView.setFitWidth(m.getWidth());
@@ -92,8 +94,10 @@ public class Pacman extends Application{
 				}
 				
 				else if(grid[i][j] == 'P') {
-					Wall wall = new Wall("images//pacmanRight.gif");
-					ImageView imageView = wall.getImageView();
+//					Wall wall = new Wall("images//pacmanRight.gif");
+//					ImageView imageView = wall.getImageView();
+					player = new Player(i, j);
+					ImageView imageView = player.getImageView();
                     imageView.setX((double)j * m.getWidth());
                     imageView.setY((double)i * m.getWidth());
                     imageView.setFitWidth(m.getWidth());
