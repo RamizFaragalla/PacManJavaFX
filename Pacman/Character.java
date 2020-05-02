@@ -4,14 +4,14 @@ import javafx.scene.image.ImageView;
 public abstract class Character {
 	private Image image;
 	private ImageView imageView;
-	private int xPos;
-	private int yPos;
+	private int r;
+	private int c;
 	
-	public Character(String path, int x, int y) {
+	public Character(String path, int r, int c) {
 		image = new Image(path);
 		setImageView(new ImageView(image));
-		setxPos(x);
-		setyPos(y);
+		setR(r);
+		setC(c);
 	}
 	
 	/**
@@ -31,28 +31,28 @@ public abstract class Character {
 	/**
 	 * @return the xPos
 	 */
-	public int getxPos() {
-		return xPos;
+	public int getR() {
+		return r;
 	}
 
 	/**
 	 * @param xPos the xPos to set
 	 */
-	public void setxPos(int xPos) {
-		this.xPos = xPos;
+	public void setR(int xPos) {
+		this.r = xPos;
 	}
 
 	/**
 	 * @return the yPos
 	 */
-	public int getyPos() {
-		return yPos;
+	public int getC() {
+		return c;
 	}
 
 	/**
 	 * @param yPos the yPos to set
 	 */
-	public void setyPos(int yPos) {
-		this.yPos = yPos;
+	public void setC(int yPos) {
+		this.c = yPos;
 	}
 }
