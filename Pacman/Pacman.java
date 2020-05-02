@@ -1,9 +1,11 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 //import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 //import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -24,11 +26,11 @@ public class Pacman extends Application{
 	
 	
 	public void start(Stage primaryStage) {
-		
+		Scene scene = new Scene(map, Color.BLACK);
 		update();
-		
-		map.setOnKeyPressed(e -> {
-			if(e.getCode() == KeyCode.RIGHT) {
+		//Button controller = new Button();
+		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+			if(key.getCode() == KeyCode.RIGHT) {
 				int r = player.getR();
 				int c = player.getC();	// change c
 				
@@ -37,14 +39,15 @@ public class Pacman extends Application{
 //					return;
 //				}
 				
-				if(grid[r][c+1] == 'W') {
-					return;
-				}
+//				if(grid[r][c+1] == 'W') {
+//					return;
+//				}
 				
 				if(grid[r][c+1] == 'S') {
 					grid[r][c] = 'E';
 					grid[r][c+1] = 'P';
 					player.setC(c+1);
+					
 					
 				}
 				System.out.println("Key Pressed");
@@ -52,7 +55,7 @@ public class Pacman extends Application{
 			}
 		});
 		
-		Scene scene = new Scene(map, Color.BLACK);
+		
 		primaryStage.setScene(scene);
 		
 		// Set the stage title.
@@ -126,6 +129,16 @@ public class Pacman extends Application{
 					player = new Player(i, j);
 					System.out.println(player.getR() + " " + player.getC());
 					ImageView imageView = player.getImageView();
+                    imageView.setX((double)j * m.getWidth());
+                    imageView.setY((double)i * m.getWidth());
+                    imageView.setFitWidth(m.getWidth());
+                    imageView.setFitHeight(m.getWidth());
+                    map.add(imageView, j+1, i+1);
+				}
+				
+				else {
+					Wall wall = new Wall("images//empty.png");
+					ImageView imageView = wall.getImageView();
                     imageView.setX((double)j * m.getWidth());
                     imageView.setY((double)i * m.getWidth());
                     imageView.setFitWidth(m.getWidth());
