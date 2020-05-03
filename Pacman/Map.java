@@ -40,7 +40,7 @@ public class Map {
 	private void fillGrid() {
 		char c;
 		try {
-			input = new Scanner(new File("Pacman/level.txt"));
+			input = new Scanner(new File("level.txt"));
 			for(int i = 0; i < ROWS; i++) {
 				for(int j = 0; j < COLS; j++) {
 					c = input.next().charAt(0);
