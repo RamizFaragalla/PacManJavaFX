@@ -7,9 +7,11 @@ public abstract class Character {
 	private int r;
 	private int c;
 	
-	public Character(String path, int r, int c) {
+	public Character(String path, int r, int c, double w) {
 		image = new Image(path);
 		setImageView(new ImageView(image));
+		imageView.setFitWidth(w);
+        imageView.setFitHeight(w);
 		setR(r);
 		setC(c);
 	}

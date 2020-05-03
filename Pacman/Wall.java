@@ -5,9 +5,11 @@ public class Wall {
 	private Image image;
 	private ImageView imageView;
 	
-	public Wall(String path) {
+	public Wall(String path, double w) {
 		image = new Image(path);
 		setImageView(new ImageView(image));
+		imageView.setFitWidth(w);
+        imageView.setFitHeight(w);
 	}
 
 

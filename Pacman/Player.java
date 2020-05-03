@@ -1,7 +1,7 @@
 public class Player extends Character{
 
-	public Player(int x, int y) {
-		super("images//pacmanRight.gif", x, y);
+	public Player(double w) {
+		super("images//pacmanRight.gif", 0, 0, w);
 	}
 
 }
