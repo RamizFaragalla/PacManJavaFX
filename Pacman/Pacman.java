@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -47,13 +48,14 @@ public class Pacman extends Application{
 			int r = player.getR();
 			int c = player.getC();	// change c
 			if(key.getCode() == KeyCode.RIGHT) {
+				String orientation = "pacmanRight.gif";
 				
 				if(grid[r][c+1] == 'S') { // if small dot
 					grid[r][c] = 'E';
 					grid[r][c+1] = 'P';
 					player.setC(c+1);
 					points += 5;
-					update(r, c, grid[r][c], r, c+1, grid[r][c+1]);
+					update(r, c, grid[r][c], r, c+1, grid[r][c+1], orientation);
 				}
 				
 				else if(grid[r][c+1] == 'B') { // if big dot
@@ -61,14 +63,14 @@ public class Pacman extends Application{
 					grid[r][c+1] = 'P';
 					player.setC(c+1);
 					points += 10;
-					update(r, c, grid[r][c], r, c+1, grid[r][c+1]);
+					update(r, c, grid[r][c], r, c+1, grid[r][c+1], orientation);
 				}
 				
 				else if(grid[r][c+1] == 'E') { // if empty space
 					grid[r][c] = 'E';
 					grid[r][c+1] = 'P';
 					player.setC(c+1);
-					update(r, c, grid[r][c], r, c+1, grid[r][c+1]);
+					update(r, c, grid[r][c], r, c+1, grid[r][c+1], orientation);
 				}
 				
 				System.out.println("Right Key Pressed");
@@ -76,13 +78,14 @@ public class Pacman extends Application{
 			}
 			
 			else if(key.getCode()==KeyCode.LEFT) {
+				String orientation = "pacmanLeft.gif";
                 if(grid[r][c-1]=='S')
                 { //if it is a small dot
                     grid[r][c]='E';
                     grid[r][c-1]='P';
                     player.setC(c-1);
                     points += 5;
-					update(r, c, grid[r][c], r, c-1, grid[r][c-1]);
+					update(r, c, grid[r][c], r, c-1, grid[r][c-1], orientation);
                 }
                 
 				else if(grid[r][c-1] == 'B') { // if big dot
@@ -90,27 +93,28 @@ public class Pacman extends Application{
 					grid[r][c-1] = 'P';
 					player.setC(c-1);
 					points += 10;
-					update(r, c, grid[r][c], r, c-1, grid[r][c-1]);
+					update(r, c, grid[r][c], r, c-1, grid[r][c-1], orientation);
 				}
 				
 				else if(grid[r][c-1] == 'E') { // if empty space
 					grid[r][c] = 'E';
 					grid[r][c-1] = 'P';
 					player.setC(c-1);
-					update(r, c, grid[r][c], r, c-1, grid[r][c-1]);
+					update(r, c, grid[r][c], r, c-1, grid[r][c-1], orientation);
 				}
 				
 				System.out.println("Right Key Pressed");
 			}
 			
 			else if(key.getCode()==KeyCode.DOWN) {
+				String orientation = "pacmanDown.gif";
                 if(grid[r+1][c]=='S')
                 { //if it is a small dot
                     grid[r][c]='E';
                     grid[r+1][c]='P';
                     player.setR(r+1);
                     points += 5;
-					update(r, c, grid[r][c], r+1, c, grid[r+1][c]);
+					update(r, c, grid[r][c], r+1, c, grid[r+1][c], orientation);
                 }
                 
 				else if(grid[r+1][c] == 'B') { // if big dot
@@ -118,27 +122,28 @@ public class Pacman extends Application{
                     grid[r+1][c]='P';
                     player.setR(r+1);
                     points += 10;
-					update(r, c, grid[r][c], r+1, c, grid[r+1][c]);
+					update(r, c, grid[r][c], r+1, c, grid[r+1][c], orientation);
 				}
 				
 				else if(grid[r+1][c] == 'E') { // if empty space
                     grid[r][c]='E';
                     grid[r+1][c]='P';
                     player.setR(r+1);
-					update(r, c, grid[r][c], r+1, c, grid[r+1][c]);
+					update(r, c, grid[r][c], r+1, c, grid[r+1][c], orientation);
 				}
 				
 				System.out.println("Down Key Pressed");
 			}
 			
 			else if(key.getCode()==KeyCode.UP) {
+				String orientation = "pacmanUp.gif";
                 if(grid[r-1][c]=='S')
                 { //if it is a small dot
                     grid[r][c]='E';
                     grid[r-1][c]='P';
                     player.setR(r-1);
                     points += 5;
-					update(r, c, grid[r][c], r-1, c, grid[r-1][c]);
+					update(r, c, grid[r][c], r-1, c, grid[r-1][c], orientation);
                 }
                 
 				else if(grid[r-1][c] == 'B') { // if big dot
@@ -146,14 +151,14 @@ public class Pacman extends Application{
                     grid[r-1][c]='P';
                     player.setR(r-1);
                     points += 10;
-					update(r, c, grid[r][c], r-1, c, grid[r-1][c]);
+					update(r, c, grid[r][c], r-1, c, grid[r-1][c], orientation);
 				}
 				
 				else if(grid[r-1][c] == 'E') { // if empty space
                     grid[r][c]='E';
                     grid[r-1][c]='P';
                     player.setR(r-1);
-					update(r, c, grid[r][c], r-1, c, grid[r-1][c]);
+					update(r, c, grid[r][c], r-1, c, grid[r-1][c], orientation);
 				}
 				
 				System.out.println("Up Key Pressed");
@@ -161,14 +166,14 @@ public class Pacman extends Application{
 		});
 	}
 	
-	public void update(int r1, int c1, char a, int r2, int c2, char b) {
-		updateHelper(r1, c1, a);
-		updateHelper(r2, c2, b);
+	public void update(int r1, int c1, char a, int r2, int c2, char b, String orientation) {
+		updateHelper(r1, c1, a, orientation);
+		updateHelper(r2, c2, b, orientation);
 		
 	}
 	
 	@SuppressWarnings("static-access")
-	public void updateHelper(int i, int j, int x) {
+	public void updateHelper(int i, int j, int x, String orientation) {
 //		map.getChildren().remove(j+1, i+1);
 		//remove node
 		for (Node node : map.getChildren()) {
@@ -205,7 +210,8 @@ public class Pacman extends Application{
 		}
 		
 		else if(x == 'P'){
-			
+			Image image = new Image("images/" + orientation);
+			player.setImageView(new ImageView(image), m.getWidth());
 			ImageView imageView = player.getImageView();
 			player.setR(i);
 			player.setC(j);

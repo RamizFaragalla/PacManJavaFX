@@ -9,7 +9,7 @@ public abstract class Character {
 	
 	public Character(String path, int r, int c, double w) {
 		image = new Image(path);
-		setImageView(new ImageView(image));
+		imageView = new ImageView(image);
 		imageView.setFitWidth(w);
         imageView.setFitHeight(w);
 		setR(r);
@@ -26,8 +26,10 @@ public abstract class Character {
 	/**
 	 * @param imageView the imageView to set
 	 */
-	public void setImageView(ImageView imageView) {
+	public void setImageView(ImageView imageView, double w) {
 		this.imageView = imageView;
+		imageView.setFitWidth(w);
+        imageView.setFitHeight(w);
 	}
 
 	/**
