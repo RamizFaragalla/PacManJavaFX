@@ -37,11 +37,9 @@ public abstract class Character {
 		return r;
 	}
 
-	/**
-	 * @param xPos the xPos to set
-	 */
-	public void setR(int xPos) {
-		this.r = xPos;
+
+	public void setR(int row) {
+		this.r = row;
 	}
 
 	/**
@@ -51,10 +49,8 @@ public abstract class Character {
 		return c;
 	}
 
-	/**
-	 * @param yPos the yPos to set
-	 */
-	public void setC(int yPos) {
-		this.c = yPos;
+
+	public void setC(int column) {
+		this.c = column;
 	}
 }
