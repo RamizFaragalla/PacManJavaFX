@@ -1,3 +1,4 @@
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -13,12 +14,14 @@ public class Pacman extends Application{
 	private GridPane map = new GridPane();
 	private Map m = new Map();
 	private char[][] grid = m.getGrid();
-	private int points = 0;
 	private Scene scene = new Scene(map, Color.BLACK);
 	
+	private Character enemy1 = new Enemy("images//ghost2.gif", m.getWidth(), 1);
+	private Character enemy2 = new Enemy("images//redghost.gif", m.getWidth(), 2);
+	
 	private Character player = new Player(m.getWidth());
-	private Character enemy1 = new Enemy1(m.getWidth());
-	private Character enemy2 = new Enemy2(m.getWidth());
+//	private Character enemy1 = new Enemy1(m.getWidth());
+//	private Character enemy2 = new Enemy2(m.getWidth());
 	private Wall wall;
 	private Wall smallDot;
 	private Wall bigDot;
@@ -29,11 +32,18 @@ public class Pacman extends Application{
 	      launch(args);
 	}
 	
-	
 	public void start(Stage primaryStage) {
 		
 		fillGrid();
+		
 		controls();
+		
+		EnemyControls enemy1Timer = new EnemyControls(enemy1);
+		enemy1Timer.start();
+		
+		EnemyControls enemy2Timer = new EnemyControls(enemy2);
+		enemy2Timer.start();
+		
 		primaryStage.setScene(scene);
 		
 		// Set the stage title.
@@ -43,18 +53,140 @@ public class Pacman extends Application{
 		primaryStage.show();
 	}
 	
+	private class EnemyControls extends AnimationTimer {
+		private long prevTime;
+		private char currPos;
+		private Character enemy;
+		private char name;
+		
+		public EnemyControls(Character e) {
+			enemy = e;
+			prevTime = 0;
+			currPos = 'E';
+			
+			if(((Enemy)e).getID() == 1)
+				name = '1';
+			
+			else name = '2';
+				
+		}
+		
+		
+		public void handle(long now) {
+			long dt = now - prevTime;
+			
+			if(dt > 0.3e9) {
+				int r = enemy.getR();
+				int c = enemy.getC();
+				char direction = randomValidDirection(enemy);
+				
+				prevTime = now;
+
+				// up
+				if(direction == 'U') {
+					grid[r][c] = currPos;
+					currPos = grid[r-1][c];
+					grid[r-1][c] = name;
+					enemy.setR(r-1);
+					update(r, c, grid[r][c], r-1, c, grid[r-1][c], "");
+					System.out.println("Enemy moved");
+				}
+				
+				// down
+				else if(direction == 'D') {
+					grid[r][c] = currPos;
+					currPos = grid[r+1][c];
+					grid[r+1][c] = name;
+					enemy.setR(r+1);
+					update(r, c, grid[r][c], r+1, c, grid[r+1][c], "");
+					System.out.println("Enemy moved");
+				}
+				
+				// left
+				else if(direction == 'L') {
+					grid[r][c] = currPos;
+					currPos = grid[r][c-1];
+					grid[r][c-1] = name;
+					enemy.setC(c-1);
+					update(r, c, grid[r][c], r, c-1, grid[r][c-1], "");
+					System.out.println("Enemy moved");
+				}
+				
+				// right
+				else {
+					grid[r][c] = currPos;
+					currPos = grid[r][c+1];
+					grid[r][c+1] = name;
+					enemy.setC(c+1);
+					update(r, c, grid[r][c], r, c+1, grid[r][c+1], "");
+					System.out.println("Enemy moved");
+				}
+			}
+		}
+	}
+	
+	public char randomValidDirection(Character e) {
+		int r = e.getR();
+		int c = e.getC();
+		char direction;
+		int randomNum;	// [1, 4], up, down, left, right
+		
+		// W, 1, 2, P
+
+		while(true) {
+			randomNum = (int)(Math.random()*4) + 1;
+
+			if(randomNum == 1) {	//up
+				if(grid[r-1][c] == 'S' || grid[r-1][c] == 'B' || grid[r-1][c] == 'E') {
+					direction = 'U';
+					break;
+				}
+				else continue;
+			}
+			
+			else if(randomNum == 2) { // down
+				if(grid[r+1][c] == 'S' || grid[r+1][c] == 'B' || grid[r+1][c] == 'E') {
+					direction = 'D';
+					break;
+				}
+				else continue;
+			}
+			
+			else if(randomNum == 3) { // left
+				if(grid[r][c-1] == 'S' || grid[r][c-1] == 'B' || grid[r][c-1] == 'E') {
+					direction = 'L';
+					break;
+				}
+				else continue;
+			}
+			
+			else { // right
+				if(grid[r][c+1] == 'S' || grid[r][c+1] == 'B' || grid[r][c+1] == 'E') {
+					direction = 'R';
+					break;
+				}
+				else continue;
+			}
+		}
+		
+		return direction;
+	}
+	
 	public void controls() {
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 			int r = player.getR();
 			int c = player.getC();	// change c
+			String orientation;
+			//System.out.println("Player: " + r + " " + c);
+			
 			if(key.getCode() == KeyCode.RIGHT) {
-				String orientation = "pacmanRight.gif";
+				orientation = "pacmanRight.gif";
 				
 				if(grid[r][c+1] == 'S') { // if small dot
 					grid[r][c] = 'E';
 					grid[r][c+1] = 'P';
 					player.setC(c+1);
-					points += 5;
+					((Player)player).setPoints(((Player)player).getPoints() + 5);
 					update(r, c, grid[r][c], r, c+1, grid[r][c+1], orientation);
 				}
 				
@@ -62,7 +194,7 @@ public class Pacman extends Application{
 					grid[r][c] = 'E';
 					grid[r][c+1] = 'P';
 					player.setC(c+1);
-					points += 10;
+					((Player)player).setPoints(((Player)player).getPoints() + 10);
 					update(r, c, grid[r][c], r, c+1, grid[r][c+1], orientation);
 				}
 				
@@ -74,17 +206,17 @@ public class Pacman extends Application{
 				}
 				
 				System.out.println("Right Key Pressed");
-				
+				System.out.println("Points so far: " + ((Player)player).getPoints());
 			}
 			
 			else if(key.getCode()==KeyCode.LEFT) {
-				String orientation = "pacmanLeft.gif";
+				orientation = "pacmanLeft.gif";
                 if(grid[r][c-1]=='S')
                 { //if it is a small dot
                     grid[r][c]='E';
                     grid[r][c-1]='P';
                     player.setC(c-1);
-                    points += 5;
+                    ((Player)player).setPoints(((Player)player).getPoints() + 5);
 					update(r, c, grid[r][c], r, c-1, grid[r][c-1], orientation);
                 }
                 
@@ -92,7 +224,7 @@ public class Pacman extends Application{
 					grid[r][c] = 'E';
 					grid[r][c-1] = 'P';
 					player.setC(c-1);
-					points += 10;
+					((Player)player).setPoints(((Player)player).getPoints() + 10);
 					update(r, c, grid[r][c], r, c-1, grid[r][c-1], orientation);
 				}
 				
@@ -104,16 +236,17 @@ public class Pacman extends Application{
 				}
 				
 				System.out.println("Right Key Pressed");
+				System.out.println("Points so far: " + ((Player)player).getPoints());
 			}
 			
 			else if(key.getCode()==KeyCode.DOWN) {
-				String orientation = "pacmanDown.gif";
+				orientation = "pacmanDown.gif";
                 if(grid[r+1][c]=='S')
                 { //if it is a small dot
                     grid[r][c]='E';
                     grid[r+1][c]='P';
                     player.setR(r+1);
-                    points += 5;
+                    ((Player)player).setPoints(((Player)player).getPoints() + 5);
 					update(r, c, grid[r][c], r+1, c, grid[r+1][c], orientation);
                 }
                 
@@ -121,7 +254,7 @@ public class Pacman extends Application{
                     grid[r][c]='E';
                     grid[r+1][c]='P';
                     player.setR(r+1);
-                    points += 10;
+                    ((Player)player).setPoints(((Player)player).getPoints() + 10);
 					update(r, c, grid[r][c], r+1, c, grid[r+1][c], orientation);
 				}
 				
@@ -133,16 +266,17 @@ public class Pacman extends Application{
 				}
 				
 				System.out.println("Down Key Pressed");
+				System.out.println("Points so far: " + ((Player)player).getPoints());
 			}
 			
 			else if(key.getCode()==KeyCode.UP) {
-				String orientation = "pacmanUp.gif";
+				orientation = "pacmanUp.gif";
                 if(grid[r-1][c]=='S')
                 { //if it is a small dot
                     grid[r][c]='E';
                     grid[r-1][c]='P';
                     player.setR(r-1);
-                    points += 5;
+                    ((Player)player).setPoints(((Player)player).getPoints() + 5);
 					update(r, c, grid[r][c], r-1, c, grid[r-1][c], orientation);
                 }
                 
@@ -150,7 +284,7 @@ public class Pacman extends Application{
                     grid[r][c]='E';
                     grid[r-1][c]='P';
                     player.setR(r-1);
-                    points += 10;
+                    ((Player)player).setPoints(((Player)player).getPoints() + 10);
 					update(r, c, grid[r][c], r-1, c, grid[r-1][c], orientation);
 				}
 				
@@ -162,6 +296,7 @@ public class Pacman extends Application{
 				}
 				
 				System.out.println("Up Key Pressed");
+				System.out.println("Points so far: " + ((Player)player).getPoints());
 			}
 		});
 	}
@@ -196,6 +331,7 @@ public class Pacman extends Application{
 		}
 		
 		else if(x == '1') {
+			//enemy1 = new Enemy("images//ghost2.gif", m.getWidth());
 			ImageView imageView = enemy1.getImageView();
 			enemy1.setR(i);
 			enemy1.setC(j);
@@ -203,6 +339,7 @@ public class Pacman extends Application{
 		}
 		
 		else if(x == '2') {
+			//enemy2 = new Enemy("images//redghost.gif", m.getWidth());
 			ImageView imageView = enemy2.getImageView();
 			enemy2.setR(i);
 			enemy2.setC(j);

@@ -16,6 +16,7 @@ public abstract class Character {
 		setC(c);
 	}
 	
+	
 	/**
 	 * @return the imageView
 	 */
@@ -33,25 +34,31 @@ public abstract class Character {
 	}
 
 	/**
-	 * @return the xPos
+	 * @return the row position
 	 */
 	public int getR() {
 		return r;
 	}
 
-
+	/**
+	 * 
+	 * @param row set the row position
+	 */
 	public void setR(int row) {
 		this.r = row;
 	}
 
 	/**
-	 * @return the yPos
+	 * @return the column position
 	 */
 	public int getC() {
 		return c;
 	}
 
-
+	/**
+	 * 
+	 * @param column set the column position
+	 */
 	public void setC(int column) {
 		this.c = column;
 	}

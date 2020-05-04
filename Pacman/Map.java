@@ -55,19 +55,4 @@ public class Map {
 		}
 	}
 	
-//	private void fillCells() {
-//		for(int i = 0; i <= ROWS; i++) {
-//			for(int j = 0; j <= COLS; j++) {
-//				if(grid[i][j] == 'W') {
-//					Wall wall = new Wall();
-//					ImageView imageView = wall.getImageView();
-//                    imageView.setX((double)j * CELL_WIDTH);
-//                    imageView.setY((double)i * CELL_WIDTH);
-//                    imageView.setFitWidth(CELL_WIDTH);
-//                    imageView.setFitHeight(CELL_WIDTH);
-//                    cells[i][j] = imageView;
-//				}	
-//			}
-//		}
-//	}
 }
