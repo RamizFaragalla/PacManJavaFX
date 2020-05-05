@@ -8,7 +8,7 @@ public class Player extends Character {
 	 * @return the points
 	 */
 	public int getPoints() {
-		return points;
+		return (int) points;
 	}
 	/**
 	 * @param points the points to set
