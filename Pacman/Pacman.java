@@ -26,6 +26,11 @@ public class Pacman extends Application{
 	private Wall smallDot;
 	private Wall bigDot;
 	private Wall empty;
+	
+	private boolean stop = false;
+	
+	private EnemyControls enemy1Timer = new EnemyControls(enemy1);
+	private EnemyControls enemy2Timer = new EnemyControls(enemy2);
 
 	public static void main(String[] args) {
 	      // Launch the application.
@@ -38,10 +43,8 @@ public class Pacman extends Application{
 		
 		controls();
 		
-		EnemyControls enemy1Timer = new EnemyControls(enemy1);
-		enemy1Timer.start();
 		
-		EnemyControls enemy2Timer = new EnemyControls(enemy2);
+		enemy1Timer.start();
 		enemy2Timer.start();
 		
 		primaryStage.setScene(scene);
@@ -179,6 +182,11 @@ public class Pacman extends Application{
 			String orientation;
 			//System.out.println("Player: " + r + " " + c);
 			
+			if(stop) {
+				key.consume();
+				return;
+			}
+			
 			if(key.getCode() == KeyCode.RIGHT) {
 				orientation = "pacmanRight.gif";
 				
@@ -203,6 +211,14 @@ public class Pacman extends Application{
 					grid[r][c+1] = 'P';
 					player.setC(c+1);
 					update(r, c, grid[r][c], r, c+1, grid[r][c+1], orientation);
+				}
+				
+				else if(grid[r][c+1] > '0' && grid[r][c+1] < '9') {
+					// enemy ahead
+					enemy1Timer.stop();
+					enemy2Timer.stop();
+					//scene.removeEventHandler(KeyEvent.KEY_PRESSED, (key));
+					stop = true;
 				}
 				
 				System.out.println("Right Key Pressed");
@@ -234,6 +250,13 @@ public class Pacman extends Application{
 					player.setC(c-1);
 					update(r, c, grid[r][c], r, c-1, grid[r][c-1], orientation);
 				}
+                
+				else if(grid[r][c-1] > '0' && grid[r][c-1] < '9') {
+					// enemy ahead
+					enemy1Timer.stop();
+					enemy2Timer.stop();
+					stop = true;
+				}
 				
 				System.out.println("Right Key Pressed");
 				System.out.println("Points so far: " + ((Player)player).getPoints());
@@ -264,6 +287,13 @@ public class Pacman extends Application{
                     player.setR(r+1);
 					update(r, c, grid[r][c], r+1, c, grid[r+1][c], orientation);
 				}
+                
+				else if(grid[r+1][c] > '0' && grid[r+1][c] < '9') {
+					// enemy ahead
+					enemy1Timer.stop();
+					enemy2Timer.stop();
+					stop = true;
+				}
 				
 				System.out.println("Down Key Pressed");
 				System.out.println("Points so far: " + ((Player)player).getPoints());
@@ -293,6 +323,13 @@ public class Pacman extends Application{
                     grid[r-1][c]='P';
                     player.setR(r-1);
 					update(r, c, grid[r][c], r-1, c, grid[r-1][c], orientation);
+				}
+                
+				else if(grid[r-1][c] > '0' && grid[r-1][c] < '9') {
+					// enemy ahead
+					enemy1Timer.stop();
+					enemy2Timer.stop();
+					stop = true;
 				}
 				
 				System.out.println("Up Key Pressed");
