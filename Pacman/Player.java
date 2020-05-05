@@ -16,6 +16,4 @@ public class Player extends Character {
 	public void setPoints(int points) {
 		this.points = points;
 	}
-
-
 }

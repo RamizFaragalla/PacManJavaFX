@@ -3,18 +3,25 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class Pacman extends Application{
 	private GridPane map = new GridPane();
 	private Map m = new Map();
 	private char[][] grid = m.getGrid();
-	private Scene scene = new Scene(map, Color.BLACK);
+	private Scene scene; 
 	
 	private Character enemy1 = new Enemy("images//ghost2.gif", m.getWidth(), 1);
 	private Character enemy2 = new Enemy("images//redghost.gif", m.getWidth(), 2);
@@ -39,8 +46,40 @@ public class Pacman extends Application{
 	
 	public void start(Stage primaryStage) {
 		
-		fillGrid();
+//		// Create the menu bar.
+//		MenuBar menuBar = new MenuBar();
+// 
+//		// Create the File menu.
+//		Menu fileMenu = new Menu("Game");
+//		MenuItem save = new MenuItem("Save Game");
+//		MenuItem load = new MenuItem("Load Game");
+//		fileMenu.getItems().add(save);
+//		fileMenu.getItems().add(load);
+//		
+//		// Register an event handler for the exit item.
+//	    save.setOnAction(event ->
+//	    {
+//	       primaryStage.close();
+//	    });
+//	    
+//	    load.setOnAction(event ->
+//	    {
+//	       primaryStage.close();
+//	    });
+//
+//	    // Add the File menu to the menu bar.
+//	    menuBar.getMenus().addAll(fileMenu);
+//	         
+//	    // Add the menu bar to a BorderPane.
+//	    BorderPane borderPane = new BorderPane();
+//	    borderPane.setTop(menuBar);
 		
+		Label score = new Label("hi");
+	    VBox vBox = new VBox(5, score, map);
+	    vBox.setBackground(Background.EMPTY);
+	    scene = new Scene(vBox, Color.BLACK);
+		
+		fillGrid();
 		controls();
 		
 		
