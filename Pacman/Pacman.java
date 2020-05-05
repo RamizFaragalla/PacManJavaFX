@@ -23,10 +23,13 @@ public class Pacman extends Application{
 	private char[][] grid = m.getGrid();
 	private Scene scene; 
 	
+	private Character player = new Player(m.getWidth());
+
+	private Label score = new Label("Score: " + Integer.toString(((Player)player).getPoints()));
+	
 	private Character enemy1 = new Enemy("images//ghost2.gif", m.getWidth(), 1);
 	private Character enemy2 = new Enemy("images//redghost.gif", m.getWidth(), 2);
 	
-	private Character player = new Player(m.getWidth());
 //	private Character enemy1 = new Enemy1(m.getWidth());
 //	private Character enemy2 = new Enemy2(m.getWidth());
 	private Wall wall;
@@ -74,9 +77,13 @@ public class Pacman extends Application{
 //	    BorderPane borderPane = new BorderPane();
 //	    borderPane.setTop(menuBar);
 		
-		Label score = new Label("hi");
+		
+		
+
 	    VBox vBox = new VBox(5, score, map);
 	    vBox.setBackground(Background.EMPTY);
+	    score.setTextFill(Color.web("#ffffff"));
+
 	    scene = new Scene(vBox, Color.BLACK);
 		
 		fillGrid();
@@ -370,10 +377,14 @@ public class Pacman extends Application{
 					enemy2Timer.stop();
 					stop = true;
 				}
-				
+                	
 				System.out.println("Up Key Pressed");
 				System.out.println("Points so far: " + ((Player)player).getPoints());
 			}
+			
+	
+			score.setText(("Score: " + Integer.toString(((Player)player).getPoints())));
+			
 		});
 	}
 	
