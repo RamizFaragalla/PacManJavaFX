@@ -101,6 +101,7 @@ public class Pacman extends Application{
 		private Character enemy;
 		private char name;
 		
+		// adjust enemy controls to run into player
 		public EnemyControls(Character e) {
 			enemy = e;
 			prevTime = 0;
@@ -183,6 +184,8 @@ public class Pacman extends Application{
 					direction = 'U';
 					break;
 				}
+				
+				//else if(grid[][] == 'P') stop timers stop keyboard even
 				else continue;
 			}
 			
@@ -374,6 +377,7 @@ public class Pacman extends Application{
 				System.out.println("Up Key Pressed");
 				System.out.println("Points so far: " + ((Player)player).getPoints());
 			}
+			
 		});
 	}
 	
