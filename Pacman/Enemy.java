@@ -1,4 +1,5 @@
-public class Enemy extends Character{
+@SuppressWarnings("serial")
+public class Enemy extends Character {
 	
 	private int id;
 	

@@ -1,3 +1,4 @@
+@SuppressWarnings("serial")
 public class Player extends Character {
 	private int points;
 	public Player(double w) {

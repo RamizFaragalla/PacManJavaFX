@@ -1,5 +1,14 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -14,6 +23,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -22,10 +32,14 @@ public class Pacman extends Application{
 	private Map m = new Map();
 	private char[][] grid = m.getGrid();
 	private Scene scene; 
+	private VBox vBox;
+	private HBox hBox;
+	private BorderPane borderPane;
 	
 	private Character player = new Player(m.getWidth());
 
 	private Label score = new Label("Score: " + Integer.toString(((Player)player).getPoints()));
+	private Label gameStatus = new Label("");
 	
 	private Character enemy1 = new Enemy("images//ghost2.gif", m.getWidth(), 1);
 	private Character enemy2 = new Enemy("images//redghost.gif", m.getWidth(), 2);
@@ -41,6 +55,8 @@ public class Pacman extends Application{
 	
 	private EnemyControls enemy1Timer = new EnemyControls(enemy1);
 	private EnemyControls enemy2Timer = new EnemyControls(enemy2);
+	
+	private ImageView playerImageView = player.getImageView();
 
 	public static void main(String[] args) {
 	      // Launch the application.
@@ -49,39 +65,108 @@ public class Pacman extends Application{
 	
 	public void start(Stage primaryStage) {
 		
-//		// Create the menu bar.
-//		MenuBar menuBar = new MenuBar();
-// 
-//		// Create the File menu.
-//		Menu fileMenu = new Menu("Game");
-//		MenuItem save = new MenuItem("Save Game");
-//		MenuItem load = new MenuItem("Load Game");
-//		fileMenu.getItems().add(save);
-//		fileMenu.getItems().add(load);
-//		
-//		// Register an event handler for the exit item.
-//	    save.setOnAction(event ->
-//	    {
-//	       primaryStage.close();
-//	    });
-//	    
-//	    load.setOnAction(event ->
-//	    {
-//	       primaryStage.close();
-//	    });
-//
-//	    // Add the File menu to the menu bar.
-//	    menuBar.getMenus().addAll(fileMenu);
-//	         
-//	    // Add the menu bar to a BorderPane.
-//	    BorderPane borderPane = new BorderPane();
-//	    borderPane.setTop(menuBar);
+		// Create the menu bar.
+		MenuBar menuBar = new MenuBar();
+ 
+		// Create the File menu.
+		Menu fileMenu = new Menu("Game");
+		MenuItem save = new MenuItem("Save Game");
+		MenuItem load = new MenuItem("Load Game");
+		fileMenu.getItems().add(save);
+		fileMenu.getItems().add(load);
 		
-		
-		
+		// Register an event handler for the exit item.
+	    save.setOnAction(event ->
+	    {
+	    	try {
+	    		FileChooser fileChooser = new FileChooser();
+	    		fileChooser.setTitle("Save Game!");
+	    		fileChooser.setInitialDirectory(new File("save"));
+	    		File file = fileChooser.showSaveDialog(primaryStage);
+	    		String fileName = "";
+	    		if(file != null) {
+	    			fileName = file.getAbsolutePath();
+	    		}
+	    		ObjectOutputStream saveGame = new ObjectOutputStream(new FileOutputStream(fileName));
+				
+	    		saveGame.writeObject(m); // save map
+	    		saveGame.writeObject(player); // save the player info
+	    		// not necessary
+//	    	    saveGame.writeObject(enemy1); // save enemy1 info
+//	    	    saveGame.writeObject(enemy2); // save enemy2 info
+	    	    
+	    		System.out.println("Game Saved");
+	    	    saveGame.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	    	   
 
-	    VBox vBox = new VBox(5, score, map);
+	    });
+	    
+	    load.setOnAction(event ->
+	    {
+	       try {
+	    	   FileChooser fileChooser = new FileChooser();
+	    	   fileChooser.setTitle("Load Game!");
+	    	   fileChooser.setInitialDirectory(new File("save"));
+	    	   File selectedFile = fileChooser.showOpenDialog(primaryStage);
+	    	   
+	    	   String fileName = "";
+	    	   if(selectedFile != null) {
+	    		   fileName = selectedFile.getPath();
+	    	   }
+	    	   
+	    	   ObjectInputStream loadGame = new ObjectInputStream(new FileInputStream(fileName));
+	    	   
+	    	   try {
+	    		   m = (Map)loadGame.readObject();
+	    		   grid = m.getGrid();
+	    		   player = (Character)loadGame.readObject();
+	    			
+//	    			enemy1Timer.stop();
+//					enemy2Timer.stop();
+//	    			for (Node node : map.getChildren())	
+//	    			    map.getChildren().remove(node);
+
+	    		   
+	    		  // if gameStatus is non empty string
+	    		   	// start timers and key event 
+	    		  
+	    		   map = new GridPane();
+	    		   fillGrid();
+	    		   vBox.getChildren().setAll(borderPane, hBox, map);
+	    		   score.setText(("Score: " + Integer.toString(((Player)player).getPoints())));
+	    		   
+	    		   System.out.println("Game Loaded");
+	    		   
+	    		   
+	    	   } catch (ClassNotFoundException e) {
+	    		   e.printStackTrace();
+	    	   }
+	    	   
+	    	   loadGame.close();
+	    	   
+	       } catch (IOException e) {
+	    	   e.printStackTrace();
+	       }
+	    });
+
+	    // Add the File menu to the menu bar.
+	    menuBar.getMenus().addAll(fileMenu);
+	         
+	    // Add the menu bar to a BorderPane.
+	    borderPane = new BorderPane();
+	    borderPane.setTop(menuBar);
+		
+		
+		hBox = new HBox(score, gameStatus);
+
+	    vBox = new VBox(borderPane, hBox, map);
 	    vBox.setBackground(Background.EMPTY);
+	    gameStatus.setTextFill(Color.RED);
 	    score.setTextFill(Color.web("#ffffff"));
 
 	    scene = new Scene(vBox, Color.BLACK);
@@ -139,7 +224,6 @@ public class Pacman extends Application{
 					grid[r-1][c] = name;
 					enemy.setR(r-1);
 					update(r, c, grid[r][c], r-1, c, grid[r-1][c], "");
-					System.out.println("Enemy moved");
 				}
 				
 				// down
@@ -149,7 +233,6 @@ public class Pacman extends Application{
 					grid[r+1][c] = name;
 					enemy.setR(r+1);
 					update(r, c, grid[r][c], r+1, c, grid[r+1][c], "");
-					System.out.println("Enemy moved");
 				}
 				
 				// left
@@ -159,17 +242,15 @@ public class Pacman extends Application{
 					grid[r][c-1] = name;
 					enemy.setC(c-1);
 					update(r, c, grid[r][c], r, c-1, grid[r][c-1], "");
-					System.out.println("Enemy moved");
 				}
 				
 				// right
-				else {
+				else if(direction == 'R'){
 					grid[r][c] = currPos;
 					currPos = grid[r][c+1];
 					grid[r][c+1] = name;
 					enemy.setC(c+1);
 					update(r, c, grid[r][c], r, c+1, grid[r][c+1], "");
-					System.out.println("Enemy moved");
 				}
 			}
 		}
@@ -178,7 +259,7 @@ public class Pacman extends Application{
 	public char randomValidDirection(Character e) {
 		int r = e.getR();
 		int c = e.getC();
-		char direction;
+		char direction = 'z';
 		int randomNum;	// [1, 4], up, down, left, right
 		
 		// W, 1, 2, P
@@ -193,12 +274,28 @@ public class Pacman extends Application{
 				}
 				
 				//else if(grid[][] == 'P') stop timers stop keyboard even
+				else if(grid[r-1][c] == 'P') {
+					enemy1Timer.stop();
+					enemy2Timer.stop();
+					stop = true;
+					gameStatus.setText("GAME OVER");
+					break;
+				}
+				
 				else continue;
 			}
 			
 			else if(randomNum == 2) { // down
 				if(grid[r+1][c] == 'S' || grid[r+1][c] == 'B' || grid[r+1][c] == 'E') {
 					direction = 'D';
+					break;
+				}
+				
+				else if(grid[r+1][c] == 'P') {
+					enemy1Timer.stop();
+					enemy2Timer.stop();
+					stop = true;
+					gameStatus.setText("GAME OVER");
 					break;
 				}
 				else continue;
@@ -209,6 +306,15 @@ public class Pacman extends Application{
 					direction = 'L';
 					break;
 				}
+				
+				else if(grid[r][c-1] == 'P') {
+					enemy1Timer.stop();
+					enemy2Timer.stop();
+					stop = true;
+					gameStatus.setText("GAME OVER");
+					break;
+				}
+				
 				else continue;
 			}
 			
@@ -217,6 +323,15 @@ public class Pacman extends Application{
 					direction = 'R';
 					break;
 				}
+				
+				else if(grid[r][c+1] == 'P') {
+					enemy1Timer.stop();
+					enemy2Timer.stop();
+					stop = true;
+					gameStatus.setText("GAME OVER");
+					break;
+				}
+				
 				else continue;
 			}
 		}
@@ -268,6 +383,7 @@ public class Pacman extends Application{
 					enemy2Timer.stop();
 					//scene.removeEventHandler(KeyEvent.KEY_PRESSED, (key));
 					stop = true;
+					gameStatus.setText("GAME OVER");
 				}
 				
 				System.out.println("Right Key Pressed");
@@ -305,6 +421,7 @@ public class Pacman extends Application{
 					enemy1Timer.stop();
 					enemy2Timer.stop();
 					stop = true;
+					gameStatus.setText("GAME OVER");
 				}
 				
 				System.out.println("Right Key Pressed");
@@ -342,6 +459,7 @@ public class Pacman extends Application{
 					enemy1Timer.stop();
 					enemy2Timer.stop();
 					stop = true;
+					gameStatus.setText("GAME OVER");
 				}
 				
 				System.out.println("Down Key Pressed");
@@ -379,25 +497,29 @@ public class Pacman extends Application{
 					enemy1Timer.stop();
 					enemy2Timer.stop();
 					stop = true;
+					gameStatus.setText("GAME OVER");
 				}
                 	
 				System.out.println("Up Key Pressed");
 				System.out.println("Points so far: " + ((Player)player).getPoints());
 			}
 			
-<<<<<<< HEAD
-=======
-	
 			score.setText(("Score: " + Integer.toString(((Player)player).getPoints())));
 			
->>>>>>> 59e9f92668523f1828b76b7b4d419a2d91491ebe
 		});
 	}
 	
 	public void update(int r1, int c1, char a, int r2, int c2, char b, String orientation) {
 		updateHelper(r1, c1, a, orientation);
 		updateHelper(r2, c2, b, orientation);
-		
+		if(won()) {
+			enemy1Timer.stop();
+			enemy2Timer.stop();
+			stop = true;
+			
+			gameStatus.setText("YOU WON");
+			gameStatus.setTextFill(Color.GREEN);
+		}
 	}
 	
 	@SuppressWarnings("static-access")
@@ -457,6 +579,16 @@ public class Pacman extends Application{
 		
 	}
 	
+	public boolean won() {
+		for(int i = 0; i < m.getRows(); i++) {
+			for(int j = 0; j < m.getCols(); j++) {
+				if(grid[i][j] == 'S' || grid[i][j] == 'B')
+					return false;
+			}
+		}
+		return true;
+	}
+	
 	// KEEP TRACK OF ENEMIES, PACMAN, ETC
 	public void fillGrid() {
 		for(int i = 0; i < m.getRows(); i++) {
@@ -494,11 +626,10 @@ public class Pacman extends Application{
 				}
 				
 				else if(grid[i][j] == 'P') {
-					ImageView imageView = player.getImageView();
 					player.setR(i);
 					player.setC(j);
 					System.out.println(player.getR() + " " + player.getC());
-                    map.add(imageView, j+1, i+1);
+                    map.add(playerImageView, j+1, i+1);
 				}
 				
 				else {

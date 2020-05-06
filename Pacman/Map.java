@@ -1,16 +1,17 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.Scanner;
 
 //import javafx.scene.image.Image;
 //import javafx.scene.image.ImageView;
 
-public class Map {
+@SuppressWarnings("serial")
+public class Map implements Serializable{
 	private final double CELL_WIDTH = 20.0;
 	private final int ROWS = 21;
 	private final int COLS = 19;
-	private final char[][] grid;
-	private Scanner input;
+	private char[][] grid;
 
 	//private ImageView[][] cells;
 	
@@ -39,6 +40,7 @@ public class Map {
 	
 	private void fillGrid() {
 		char c;
+		Scanner input;
 		try {
 			input = new Scanner(new File("level.txt"));
 			for(int i = 0; i < ROWS; i++) {

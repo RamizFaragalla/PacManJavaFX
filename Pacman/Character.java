@@ -1,9 +1,12 @@
+import java.io.Serializable;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public abstract class Character {
-	private Image image;
-	private ImageView imageView;
+@SuppressWarnings("serial")
+public abstract class Character implements Serializable{
+	private transient Image image;
+	private transient ImageView imageView;
 	private int r;
 	private int c;
 	
