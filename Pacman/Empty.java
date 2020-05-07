@@ -1,12 +1,12 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Wall implements Item {
+public class Empty implements Item {
 	private Image image;
 	private ImageView imageView;
 	
-	public Wall(double w) {
-		image = new Image("images//wall.png");
+	public Empty(double w) {
+		image = new Image("images//empty.png");
 		setImageView(new ImageView(image));
 		imageView.setFitWidth(w);
         imageView.setFitHeight(w);
