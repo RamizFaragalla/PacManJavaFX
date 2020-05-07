@@ -42,7 +42,7 @@ public class Map implements Serializable{
 		char c;
 		Scanner input;
 		try {
-			input = new Scanner(new File("level.txt"));
+			input = new Scanner(new File("Pacman/level.txt"));
 			for(int i = 0; i < ROWS; i++) {
 				for(int j = 0; j < COLS; j++) {
 					c = input.next().charAt(0);

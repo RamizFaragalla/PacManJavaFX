@@ -1,2 +1,3 @@
-module test {
-}
+//module test {
+//
+//}
