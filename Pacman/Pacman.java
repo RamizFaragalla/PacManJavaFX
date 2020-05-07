@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -59,7 +60,7 @@ public class Pacman extends Application {
 		
 		
 		fileSystem(primaryStage);
-		hBox = new HBox(score, gameStatus, btnNewGame);
+		hBox = new HBox(score, gameStatus);
 		vBox = new VBox(borderPane, hBox, map);
 		vBox.setBackground(Background.EMPTY);
 		gameStatus.setTextFill(Color.RED);
@@ -71,13 +72,11 @@ public class Pacman extends Application {
 		enemy1.controls();
 		enemy2.controls();
 	
-		btnNewGame.setOnAction( __ ->
-        {
-            System.out.println( "Restarting app!" );
-            primaryStage.close();
-            primaryStage.setScene( new Scene( new BorderPane( btnNewGame ) ) );
-            primaryStage.show();
-        } );
+		btnNewGame.setOnAction( e -> {
+        	  System.out.println( "Restarting app!" );
+        	  primaryStage.close();
+        	  Platform.runLater(() -> new Pacman().start(new Stage()));
+        });
 		
 		primaryStage.setScene(scene);
 		
@@ -103,8 +102,8 @@ public class Pacman extends Application {
 	    save.setOnAction(event ->
 	    {
 	    	try {
-	    	    enemy1.stopControls();
-		    	enemy2.stopControls();
+//	    	    enemy1.stopControls();
+//		    	enemy2.stopControls();
 	    		FileChooser fileChooser = new FileChooser();
 	    		fileChooser.setTitle("Save Game!");
 	    		fileChooser.setInitialDirectory(new File("save"));
@@ -113,17 +112,16 @@ public class Pacman extends Application {
 	    		if(file != null) {
 	    			fileName = file.getAbsolutePath();
 	    		}
+	    		else return;
+	    		
 	    		ObjectOutputStream saveGame = new ObjectOutputStream(new FileOutputStream(fileName));
 				
 	    		saveGame.writeObject(m); // save map
 	    		saveGame.writeObject(player); // save the player info
-	    		// not necessary
-//		    	    saveGame.writeObject(enemy1); // save enemy1 info
-//		    	    saveGame.writeObject(enemy2); // save enemy2 info
 	    	    
 	    		System.out.println("Game Saved");
-	    		enemy1.controls();
-	    		enemy2.controls();
+//	    		enemy1.controls();
+//	    		enemy2.controls();
 	    	    saveGame.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -141,6 +139,7 @@ public class Pacman extends Application {
 	    	   enemy1.stopControls();
 	    	   enemy2.stopControls();
 	    	   
+	    	   
 	    	   FileChooser fileChooser = new FileChooser();
 	    	   fileChooser.setTitle("Load Game!");
 	    	   fileChooser.setInitialDirectory(new File("save"));
@@ -150,6 +149,7 @@ public class Pacman extends Application {
 	    	   if(selectedFile != null) {
 	    		   fileName = selectedFile.getPath();
 	    	   }
+	    	   else return; 
 	    	   
 	    	   ObjectInputStream loadGame = new ObjectInputStream(new FileInputStream(fileName));
 	    	   
@@ -208,6 +208,7 @@ public class Pacman extends Application {
 	       } catch (IOException e) {
 	    	   e.printStackTrace();
 	       }
+	       load.setOnAction(null);
 	    });
 	
 	    // Add the File menu to the menu bar.
@@ -218,6 +219,6 @@ public class Pacman extends Application {
 	    borderPane.setTop(menuBar);
 		
 		
-		hBox = new HBox(score, gameStatus, btnNewGame);
+		hBox = new HBox(score, gameStatus);
 	}
 }

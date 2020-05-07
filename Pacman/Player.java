@@ -69,7 +69,6 @@ public class Player extends Character {
 		char grid[][] = getMap().getGrid();
 
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-			
 			//findPlayer();
 			int r = getR();
 			int c = getC();	
