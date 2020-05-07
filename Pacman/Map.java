@@ -3,23 +3,96 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.Scanner;
 
-//import javafx.scene.image.Image;
-//import javafx.scene.image.ImageView;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 
 @SuppressWarnings("serial")
-public class Map implements Serializable{
+public class Map implements Serializable {
 	private final double CELL_WIDTH = 20.0;
 	private final int ROWS = 21;
 	private final int COLS = 19;
 	private char[][] grid;
-
-	//private ImageView[][] cells;
+	private transient GridPane map = new GridPane();
+	private Player player;
+	private Enemy enemy1, enemy2;
 	
 	public Map() {
 		grid = new char[ROWS][COLS];
 		//cells = new ImageView[ROWS][COLS];
 		fillGrid();
 		//fillCells();
+	}
+	
+	public void setCharacters(Player player, Enemy enemy1, Enemy enemy2) {
+		this.player = player;
+		this.enemy1 = enemy1;
+		this.enemy2 = enemy2;
+	}
+	
+	public void setGridPane(GridPane g) {
+		map = g;
+		
+	}
+	
+	public void fillGridPane() {
+		for(int i = 0; i < ROWS; i++) {
+			for(int j = 0; j < COLS; j++) {
+//				for (Node node : map.getChildren()) {
+//				    if (map.getColumnIndex(node) == (j+1) && map.getRowIndex(node) == (i+1)) {
+//				        map.getChildren().remove(node);
+//				        break;
+//				    }
+//				}
+				if(grid[i][j] == 'W') {
+					Item wall = new Wall(CELL_WIDTH);
+                    map.add(wall.getImageView(), j+1, i+1);
+				}
+				
+				else if(grid[i][j] == 'S') {
+					Item smallDot = new Coin("images//smalldot.png", CELL_WIDTH);
+                    map.add(smallDot.getImageView(), j+1, i+1);
+				}
+				
+				else if(grid[i][j] == 'B') {
+					Item bigDot = new Coin("images//whitedot.png", CELL_WIDTH);
+                    map.add(bigDot.getImageView(), j+1, i+1);
+				}
+				
+				else if(grid[i][j] == '1') {
+					enemy1.setR(i);
+					enemy1.setC(j);
+                    map.add(enemy1.getImageView(), j+1, i+1);
+				}
+				
+				else if(grid[i][j] == '2') {
+					enemy2.setR(i);
+					enemy2.setC(j);
+                    map.add(enemy2.getImageView(), j+1, i+1);
+				}
+				
+				else if(grid[i][j] == 'P') {
+					player.setR(i);
+					player.setC(j);
+					System.out.println(player.getR() + " " + player.getC());
+                    map.add(player.getImageView(), j+1, i+1);
+				}
+				
+				else {
+					Item empty = new Empty(CELL_WIDTH);
+//                    imageView.setX((double)j * m.getWidth());
+//                    imageView.setY((double)i * m.getWidth());
+//                    imageView.setFitWidth(m.getWidth());
+//                    imageView.setFitHeight(m.getWidth());
+                    map.add(empty.getImageView(), j+1, i+1);
+				}
+			}
+		}
+	}
+	
+	public GridPane getGridPane() {
+		return map;
 	}
 	
 	public double getWidth() {
@@ -55,6 +128,79 @@ public class Map implements Serializable{
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean won() {
+		for(int i = 0; i < getRows(); i++) {
+			for(int j = 0; j < getCols(); j++) {
+				if(grid[i][j] == 'S' || grid[i][j] == 'B')
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	public void update(int r1, int c1, char a, int r2, int c2, char b, String orientation) {
+		updateHelper(r1, c1, a, orientation);
+		updateHelper(r2, c2, b, orientation);
+		if(won()) {
+			enemy1.stopControls();
+			enemy2.stopControls();
+			player.stopControls();
+			
+			player.won();
+		}
+	}
+	
+	@SuppressWarnings("static-access")
+	public void updateHelper(int i, int j, int x, String orientation) {
+		
+//		map.getChildren().remove(j+1, i+1);
+		//remove node
+		for (Node node : map.getChildren()) {
+		    if (map.getColumnIndex(node) == (j+1) && map.getRowIndex(node) == (i+1)) {
+		        map.getChildren().remove(node);
+		        break;
+		    }
+		}
+		///////////////////////////////////////////////change item classes to ()
+		if(x == 'S') {
+			Item smallDot = new Coin("images//smalldot.png", CELL_WIDTH);
+            map.add(smallDot.getImageView(), j+1, i+1);
+		}
+		
+		else if(x == 'B') {
+			Item bigDot = new Coin("images//whitedot.png", CELL_WIDTH);
+            map.add(bigDot.getImageView(), j+1, i+1);
+		}
+		
+		else if(x == '1') {
+			enemy1.setR(i);
+			enemy1.setC(j);
+            map.add(enemy1.getImageView(), j+1, i+1);
+		}
+		
+		else if(x == '2') {
+			enemy2.setR(i);
+			enemy2.setC(j);
+            map.add(enemy2.getImageView(), j+1, i+1);
+		}
+		
+		else if(x == 'P'){
+			Image image = new Image("images/" + orientation);
+			player.setImageView(new ImageView(image), CELL_WIDTH);
+			player.setR(i);
+			player.setC(j);
+			System.out.println(player.getR() + " " + player.getC());
+            map.add(player.getImageView(), j+1, i+1);
+		}
+		
+		else {
+			Item empty = new Empty(CELL_WIDTH);
+			ImageView imageView = empty.getImageView();
+            map.add(imageView, j+1, i+1);
+		}
+		
 	}
 	
 }

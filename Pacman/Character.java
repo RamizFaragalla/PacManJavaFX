@@ -10,16 +10,30 @@ public abstract class Character implements Serializable{
 	private int r;
 	private int c;
 	
-	public Character(String path, int r, int c, double w) {
+	private Map m;
+	
+	public Character(Map m, String path, int r, int c) {
+		this.m = m;
 		image = new Image(path);
 		imageView = new ImageView(image);
-		imageView.setFitWidth(w);
-        imageView.setFitHeight(w);
+		imageView.setFitWidth(m.getWidth());
+        imageView.setFitHeight(m.getWidth());
 		setR(r);
 		setC(c);
 	}
 	
+	public abstract void controls();
+	public abstract void stopControls();
 	
+	public Map getMap() {
+		return m;
+	}
+	
+	public void setMap(Map m) {
+		this.m = m;
+	}
+	
+	//public abstract void controls(Scene scene);
 	/**
 	 * @return the imageView
 	 */

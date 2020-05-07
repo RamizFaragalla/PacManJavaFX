@@ -20,3 +20,8 @@
 /Pacman$2.class
 /module-info.class
 /EnemyControls.class
+/Coin.class
+/Empty.class
+/Enemy$EnemyControls.class
+/Item.class
+/Runner.class
