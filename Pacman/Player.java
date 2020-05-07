@@ -60,10 +60,16 @@ public class Player extends Character {
 		gameStatus.setTextFill(Color.GREEN);
 	}
 	
+	public void stillPlaying() {
+		gameStatus.setText("");
+	}
+	
 	public void controls() {
 		stop = false;
 		char grid[][] = getMap().getGrid();
+
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+			
 			//findPlayer();
 			int r = getR();
 			int c = getC();	

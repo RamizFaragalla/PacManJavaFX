@@ -150,6 +150,9 @@ public class Map implements Serializable {
 			
 			player.won();
 		}
+		
+		else
+			player.stillPlaying();
 	}
 	
 	@SuppressWarnings("static-access")

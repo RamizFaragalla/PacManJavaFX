@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -36,6 +37,7 @@ public class Pacman extends Application {
 	private Scene scene;
 	private Label score = new Label("Score: " + Integer.toString(player.getPoints()));
 	private Label gameStatus = new Label("");
+	private Button btnNewGame = new Button("New Game");
 	
 	public static void main(String[] args) {
 	      // Launch the application.
@@ -57,7 +59,7 @@ public class Pacman extends Application {
 		
 		
 		fileSystem(primaryStage);
-		hBox = new HBox(score, gameStatus);
+		hBox = new HBox(score, gameStatus, btnNewGame);
 		vBox = new VBox(borderPane, hBox, map);
 		vBox.setBackground(Background.EMPTY);
 		gameStatus.setTextFill(Color.RED);
@@ -69,7 +71,14 @@ public class Pacman extends Application {
 		enemy1.controls();
 		enemy2.controls();
 	
-			
+		btnNewGame.setOnAction( __ ->
+        {
+            System.out.println( "Restarting app!" );
+            primaryStage.close();
+            primaryStage.setScene( new Scene( new BorderPane( btnNewGame ) ) );
+            primaryStage.show();
+        } );
+		
 		primaryStage.setScene(scene);
 		
 		// Set the stage title.
@@ -94,6 +103,8 @@ public class Pacman extends Application {
 	    save.setOnAction(event ->
 	    {
 	    	try {
+	    	    enemy1.stopControls();
+		    	enemy2.stopControls();
 	    		FileChooser fileChooser = new FileChooser();
 	    		fileChooser.setTitle("Save Game!");
 	    		fileChooser.setInitialDirectory(new File("save"));
@@ -111,6 +122,8 @@ public class Pacman extends Application {
 //		    	    saveGame.writeObject(enemy2); // save enemy2 info
 	    	    
 	    		System.out.println("Game Saved");
+	    		enemy1.controls();
+	    		enemy2.controls();
 	    	    saveGame.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -124,7 +137,7 @@ public class Pacman extends Application {
 	    load.setOnAction(event ->
 	    {
 	       try {
-	    	  player.stopControls();
+	    	   player.stopControls();
 	    	   enemy1.stopControls();
 	    	   enemy2.stopControls();
 	    	   
@@ -146,6 +159,7 @@ public class Pacman extends Application {
 	    		   
 
 	    		   score.setText(("Score: " + Integer.toString(player.getPoints())));
+	    		   m.won();
 	    		   
 	    		   // add to player
 	    		   ImageView imageView = new ImageView("images//pacmanRight.gif");
@@ -204,6 +218,6 @@ public class Pacman extends Application {
 	    borderPane.setTop(menuBar);
 		
 		
-		hBox = new HBox(score, gameStatus);
+		hBox = new HBox(score, gameStatus, btnNewGame);
 	}
 }
