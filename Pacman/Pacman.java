@@ -19,6 +19,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -38,7 +39,6 @@ public class Pacman extends Application {
 	private Scene scene;
 	private Label score = new Label("Score: " + Integer.toString(player.getPoints()));
 	private Label gameStatus = new Label("");
-	private Button btnNewGame = new Button("New Game");
 	
 	public static void main(String[] args) {
 	      // Launch the application.
@@ -72,11 +72,13 @@ public class Pacman extends Application {
 		enemy1.controls();
 		enemy2.controls();
 	
-		btnNewGame.setOnAction( e -> {
-        	  System.out.println( "Restarting app!" );
-        	  primaryStage.close();
-        	  Platform.runLater(() -> new Pacman().start(new Stage()));
-        });
+
+//		btnNewGame.setOnAction( e -> {
+//        	  System.out.println( "Restarting app!" );
+//        	  primaryStage.close();
+//        	  Platform.runLater(() -> new Pacman().start(new Stage()));
+//        });
+
 		
 		primaryStage.setScene(scene);
 		
@@ -95,8 +97,12 @@ public class Pacman extends Application {
 		Menu fileMenu = new Menu("Game");
 		MenuItem save = new MenuItem("Save Game");
 		MenuItem load = new MenuItem("Load Game");
+		MenuItem btnNewGame = new MenuItem("Restart Game");
+
 		fileMenu.getItems().add(save);
 		fileMenu.getItems().add(load);
+		fileMenu.getItems().add(btnNewGame);
+
 		
 		// Register an event handler for the exit item.
 	    save.setOnAction(event ->
@@ -131,6 +137,14 @@ public class Pacman extends Application {
 	    	   
 	
 	    });
+	    
+	    btnNewGame.setOnAction( event ->
+        {
+        	System.out.println( "Restarting app!" );
+            primaryStage.close();
+            Platform.runLater( () -> new Pacman().start( new Stage() ) );
+            primaryStage.show();
+        } );
 	    
 	    load.setOnAction(event ->
 	    {
@@ -210,6 +224,8 @@ public class Pacman extends Application {
 	       }
 	       load.setOnAction(null);
 	    });
+	    
+	    
 	
 	    // Add the File menu to the menu bar.
 	    menuBar.getMenus().addAll(fileMenu);
