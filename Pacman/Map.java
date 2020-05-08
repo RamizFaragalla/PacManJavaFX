@@ -1,18 +1,18 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
-import java.util.Scanner;
-
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.Serializable;
+import java.util.Scanner;
+
 @SuppressWarnings("serial")
 public class Map implements Serializable {
 	private final double CELL_WIDTH = 20.0;
-	private final int ROWS = 21;
-	private final int COLS = 19;
+	private final int ROWS = 13;
+	private final int COLS = 25;
 	private char[][] grid;
 	private transient GridPane map = new GridPane();
 	private Player player;
@@ -115,7 +115,7 @@ public class Map implements Serializable {
 		char c;
 		Scanner input;
 		try {
-			input = new Scanner(new File("Pacman/level.txt"));
+			input = new Scanner(new File("level.txt"));
 			for(int i = 0; i < ROWS; i++) {
 				for(int j = 0; j < COLS; j++) {
 					c = input.next().charAt(0);

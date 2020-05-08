@@ -1,11 +1,3 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -13,19 +5,17 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.*;
+
 public class Pacman extends Application {
-	private Map m = new Map();
-	private Player player = new Player(m);
-	private GridPane map = m.getGridPane();
+	private Map m = new Map(); // create the new map
+	private Player player = new Player(m); // create the new plater
+	private GridPane map = m.getGridPane(); //
 	
 	private Enemy enemy1 = new Enemy(m, "images//ghost2.gif", '1');
 	private Enemy enemy2 = new Enemy(m, "images//redghost.gif", '2');
