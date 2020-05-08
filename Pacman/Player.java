@@ -1,11 +1,11 @@
-import java.io.Serializable;
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+
+import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class Player extends Character {
@@ -48,7 +48,7 @@ public class Player extends Character {
 		this.points = points;
 	}
 	
-	public void setLabels(Label score, Label gameStatus) {
+	public void setLabels(Label score, Label gameStatus) { //Set score and gamestatus
 		this.score = score;
 		this.gameStatus = gameStatus;
 	}
@@ -255,7 +255,7 @@ public class Player extends Character {
 			System.out.println("****Player: " + r + " " + c);
 			
 			if(stop) {
-				key.consume();
+				key.consume(); // so key won't be passed to other event listeners.
 				return;
 			}
 			

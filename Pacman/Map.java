@@ -11,8 +11,8 @@ import java.util.Scanner;
 @SuppressWarnings("serial")
 public class Map implements Serializable {
 	private final double CELL_WIDTH = 20.0;
-	private final int ROWS = 13;
-	private final int COLS = 25;
+	private final int ROWS = 21;
+	private final int COLS = 19;
 	private char[][] grid;
 	private transient GridPane map = new GridPane();
 	private Player player;
@@ -38,8 +38,8 @@ public class Map implements Serializable {
 		
 	}
 	
-	public void fillGridPane() {
-		for(int i = 0; i < ROWS; i++) {
+	public void fillGridPane() { //fills gridpane with the appropriate pictures, index is 0 for array
+		for(int i = 0; i < ROWS; i++) { //but +1 for the gridpane, hence j+1, i+1 in each row.
 			for(int j = 0; j < COLS; j++) {
 
 				if(grid[i][j] == 'W') {
@@ -124,7 +124,7 @@ public class Map implements Serializable {
 		char c;
 		Scanner input;
 		try {
-			input = new Scanner(new File("level.txt"));
+			input = new Scanner(new File("Pacman/level.txt"));
 			for(int i = 0; i < ROWS; i++) {
 				for(int j = 0; j < COLS; j++) {
 					c = input.next().charAt(0);

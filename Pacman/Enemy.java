@@ -1,10 +1,10 @@
-import java.io.Serializable;
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 
+import java.io.Serializable;
+
 @SuppressWarnings("serial")
-public class Enemy extends Character {
+public class Enemy extends Character { // class that contains all the enemies
 	
 	private char id;
 	private EnemyControls timer = new EnemyControls();

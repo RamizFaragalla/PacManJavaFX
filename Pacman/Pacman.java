@@ -15,11 +15,11 @@ import java.io.*;
 
 public class Pacman extends Application {
 	private Map m = new Map(); // create the new map
-	private Player player = new Player(m); // create the new plater
-	private GridPane map = m.getGridPane(); //
+	private Player player = new Player(m); // create the new player
+	private GridPane map = m.getGridPane(); // return the map + assign it to map
 	
-	private Enemy enemy1 = new Enemy(m, "images//ghost2.gif", '1');
-	private Enemy enemy2 = new Enemy(m, "images//redghost.gif", '2');
+	private Enemy enemy1 = new Enemy(m, "images//ghost1.gif", '1');
+	private Enemy enemy2 = new Enemy(m, "images//ghost3.gif", '2');
 	private Enemy enemy3 = new Enemy(m, "images//ghost2.gif", '3');
 	private Enemy enemy4 = new Enemy(m, "images//redghost.gif", '4');
 	
@@ -38,14 +38,14 @@ public class Pacman extends Application {
 	public void start(Stage primaryStage) {
 		
 		
-		player.setLabels(score, gameStatus);
-		enemy1.setCharacters(player, enemy2, enemy3, enemy4);
+		player.setLabels(score, gameStatus); // set the score and the status of the game
+		enemy1.setCharacters(player, enemy2, enemy3, enemy4); // set the characters for each one, so they can get access to each other.
 		enemy2.setCharacters(player, enemy1, enemy3, enemy4);
 		enemy3.setCharacters(player, enemy1, enemy2, enemy4);
 		enemy4.setCharacters(player, enemy1, enemy2, enemy3);
 		
 	
-		player.setEnemies(enemy1, enemy2, enemy3, enemy4);
+		player.setEnemies(enemy1, enemy2, enemy3, enemy4); //so the player has access to enemies
 		
 		m.setCharacters(player, enemy1, enemy2, enemy3, enemy4);
 		m.fillGridPane();
@@ -53,16 +53,16 @@ public class Pacman extends Application {
 		
 		
 		fileSystem(primaryStage);
-		hBox = new HBox(score, gameStatus);
+		hBox = new HBox(score, gameStatus); // hbx for the score
 		vBox = new VBox(borderPane, hBox, map);
 		vBox.setBackground(Background.EMPTY);
 		gameStatus.setTextFill(Color.RED);
 		score.setTextFill(Color.web("#ffffff"));
-		scene = new Scene(vBox, Color.BLACK);
+		scene = new Scene(vBox, Color.BLACK); // not sure
 		
 		player.setScene(scene);
 		player.controls();
-		enemy1.controls();
+		enemy1.controls(); // starts the timer for the enemy
 		enemy2.controls();
 		enemy3.controls();
 		enemy4.controls();
