@@ -9,7 +9,6 @@ import java.io.ObjectOutputStream;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -19,7 +18,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -32,6 +30,8 @@ public class Pacman extends Application {
 	
 	private Enemy enemy1 = new Enemy(m, "images//ghost2.gif", '1');
 	private Enemy enemy2 = new Enemy(m, "images//redghost.gif", '2');
+	private Enemy enemy3 = new Enemy(m, "images//ghost2.gif", '3');
+	private Enemy enemy4 = new Enemy(m, "images//redghost.gif", '4');
 	
 	private VBox vBox;
 	private HBox hBox;
@@ -49,12 +49,15 @@ public class Pacman extends Application {
 		
 		
 		player.setLabels(score, gameStatus);
-		enemy1.setCharacters(player, enemy2);
-		enemy2.setCharacters(player, enemy1);
-	
-		player.setEnemies(enemy1, enemy2);
+		enemy1.setCharacters(player, enemy2, enemy3, enemy4);
+		enemy2.setCharacters(player, enemy1, enemy3, enemy4);
+		enemy3.setCharacters(player, enemy1, enemy2, enemy4);
+		enemy4.setCharacters(player, enemy1, enemy2, enemy3);
 		
-		m.setCharacters(player, enemy1, enemy2);
+	
+		player.setEnemies(enemy1, enemy2, enemy3, enemy4);
+		
+		m.setCharacters(player, enemy1, enemy2, enemy3, enemy4);
 		m.fillGridPane();
 		//m.getGridPane().setBackground(Background.EMPTY);
 		
@@ -71,14 +74,8 @@ public class Pacman extends Application {
 		player.controls();
 		enemy1.controls();
 		enemy2.controls();
-	
-
-//		btnNewGame.setOnAction( e -> {
-//        	  System.out.println( "Restarting app!" );
-//        	  primaryStage.close();
-//        	  Platform.runLater(() -> new Pacman().start(new Stage()));
-//        });
-
+		enemy3.controls();
+		enemy4.controls();
 		
 		primaryStage.setScene(scene);
 		
@@ -108,8 +105,13 @@ public class Pacman extends Application {
 	    save.setOnAction(event ->
 	    {
 	    	try {
-//	    	    enemy1.stopControls();
-//		    	enemy2.stopControls();
+	    		
+	    		player.stopControls();
+		    	enemy1.stopControls();
+		    	enemy2.stopControls();
+		    	enemy3.stopControls();
+		    	enemy4.stopControls();
+		    	   
 	    		FileChooser fileChooser = new FileChooser();
 	    		fileChooser.setTitle("Save Game!");
 	    		fileChooser.setInitialDirectory(new File("save"));
@@ -118,7 +120,14 @@ public class Pacman extends Application {
 	    		if(file != null) {
 	    			fileName = file.getAbsolutePath();
 	    		}
-	    		else return;
+	    		else {
+	    			player.controls();
+    	   		   	enemy1.controls();
+	    		   	enemy2.controls();
+	    		   	enemy3.controls();
+	    		   	enemy4.controls();
+	    			return;
+	    		}
 	    		
 	    		ObjectOutputStream saveGame = new ObjectOutputStream(new FileOutputStream(fileName));
 				
@@ -126,25 +135,26 @@ public class Pacman extends Application {
 	    		saveGame.writeObject(player); // save the player info
 	    	    
 	    		System.out.println("Game Saved");
-//	    		enemy1.controls();
-//	    		enemy2.controls();
 	    	    saveGame.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	    	   
+	    	
+   		    player.controls();
+		    enemy1.controls();
+		    enemy2.controls();
+		    enemy3.controls();
+	    	enemy4.controls();
 	
 	    });
 	    
-	    btnNewGame.setOnAction( event ->
-        {
-        	System.out.println( "Restarting app!" );
-            primaryStage.close();
-            Platform.runLater( () -> new Pacman().start( new Stage() ) );
-            primaryStage.show();
-        } );
+		btnNewGame.setOnAction( e -> {
+			System.out.println( "Restarting app!" );
+			primaryStage.close();
+			Platform.runLater(() -> new Pacman().start(new Stage()));
+        });
 	    
 	    load.setOnAction(event ->
 	    {
@@ -152,7 +162,8 @@ public class Pacman extends Application {
 	    	   player.stopControls();
 	    	   enemy1.stopControls();
 	    	   enemy2.stopControls();
-	    	   
+	    	   enemy3.stopControls();
+	    	   enemy4.stopControls();
 	    	   
 	    	   FileChooser fileChooser = new FileChooser();
 	    	   fileChooser.setTitle("Load Game!");
@@ -163,7 +174,14 @@ public class Pacman extends Application {
 	    	   if(selectedFile != null) {
 	    		   fileName = selectedFile.getPath();
 	    	   }
-	    	   else return; 
+	    	   else {
+	    		   player.controls();
+	    		   enemy1.controls();
+	    		   enemy2.controls();
+	    		   enemy3.controls();
+	    		   enemy4.controls();
+	    		   return; 
+	    	   }
 	    	   
 	    	   ObjectInputStream loadGame = new ObjectInputStream(new FileInputStream(fileName));
 	    	   
@@ -187,12 +205,15 @@ public class Pacman extends Application {
 	    		   
 	    		   Enemy enemy1 = new Enemy(m, "images//ghost2.gif", '1');
 	    		   Enemy enemy2 = new Enemy(m, "images//redghost.gif", '2');
-	    		   enemy1.setCharacters(player, enemy2);
-	    		   //enemy2.setMap(m);
-	    		   enemy2.setCharacters(player, enemy1);
-	    		   player.setEnemies(enemy1, enemy2);
+	    		   Enemy enemy3 = new Enemy(m, "images//ghost2.gif", '3');
+	    		   Enemy enemy4 = new Enemy(m, "images//redghost.gif", '4');
+	    		   enemy1.setCharacters(player, enemy2, enemy3, enemy4);
+	    		   enemy2.setCharacters(player, enemy1, enemy3, enemy4);
+	    		   enemy3.setCharacters(player, enemy1, enemy2, enemy4);
+	    		   enemy4.setCharacters(player, enemy1, enemy2, enemy3);
+	    		   player.setEnemies(enemy1, enemy2, enemy3, enemy4);
 	    		   
-	    		   m.setCharacters(player, enemy1, enemy2);
+	    		   m.setCharacters(player, enemy1, enemy2, enemy3, enemy4);
 	    		   m.setGridPane(map);
 	    		   map.getChildren().clear();
 	    		   
@@ -201,16 +222,18 @@ public class Pacman extends Application {
 	    		   player.controls();
 	    		   enemy1.controls();
 	    		   enemy2.controls();
+	    		   enemy3.controls();
+	    		   enemy4.controls();
 	    		   
 	    		   System.out.println("Game Loaded");
 	    		   
-	    			for(int i = 0; i < m.getRows(); i++) {
-	    				for(int j = 0; j < m.getCols(); j++) {
-	    					System.out.print(m.getGrid()[i][j]);
-	    				}
-	    				
-	    				System.out.println();
-	    			} 
+//	    			for(int i = 0; i < m.getRows(); i++) {
+//	    				for(int j = 0; j < m.getCols(); j++) {
+//	    					System.out.print(m.getGrid()[i][j]);
+//	    				}
+//	    				
+//	    				System.out.println();
+//	    			} 
 	    		   
 	    		   
 	    	   } catch (ClassNotFoundException e) {
