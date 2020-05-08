@@ -188,7 +188,7 @@ public class Pacman extends Application {
 	    		   player.setImageView(imageView, m.getWidth());
 	    		   player.setScene(scene);
 	    		   
-	    		   player.setLabels(score, gameStatus);
+	    		   //player.setLabels(score, gameStatus);
 	    		   player.setMap(m);
 	    		   System.out.println("***" + player.getR() + "*" + player.getC());
 	    		   //enemy1.setMap(m);
@@ -215,15 +215,18 @@ public class Pacman extends Application {
 	    		   enemy3.controls();
 	    		   enemy4.controls();
 	    		   
+	    		   
+	    		   if(gameStatus.getText().equals("GAME OVER"))
+	    			   gameStatus.setText("");
+	    		   
+	    		   player.setLabels(score, gameStatus);
+	    		   enemy1.setGameStatus(gameStatus);
+	    		   enemy2.setGameStatus(gameStatus);
+	    		   enemy3.setGameStatus(gameStatus);
+	    		   enemy4.setGameStatus(gameStatus);
 	    		   System.out.println("Game Loaded");
 	    		   
-//	    			for(int i = 0; i < m.getRows(); i++) {
-//	    				for(int j = 0; j < m.getCols(); j++) {
-//	    					System.out.print(m.getGrid()[i][j]);
-//	    				}
-//	    				
-//	    				System.out.println();
-//	    			} 
+
 	    		   
 	    		   
 	    	   } catch (ClassNotFoundException e) {

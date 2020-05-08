@@ -27,6 +27,9 @@ public class Enemy extends Character { // class that contains all the enemies
 		gameStatus = player.getGameStatus();
 	}
 	
+	public void setGameStatus(Label g) {
+		gameStatus = g;
+	}
 
 	/**
 	 * @return the id
@@ -129,7 +132,6 @@ public class Enemy extends Character { // class that contains all the enemies
 					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
-					direction = 'z';
 					break;
 				}
 				
@@ -149,7 +151,6 @@ public class Enemy extends Character { // class that contains all the enemies
 					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
-					direction = 'z';
 					break;
 				}
 				else continue;
@@ -168,7 +169,6 @@ public class Enemy extends Character { // class that contains all the enemies
 					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
-					direction = 'z';
 					break;
 				}
 				
@@ -188,7 +188,6 @@ public class Enemy extends Character { // class that contains all the enemies
 					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
-					direction = 'z';
 					break;
 				}
 				

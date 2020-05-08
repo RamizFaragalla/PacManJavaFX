@@ -119,7 +119,7 @@ public class Player extends Character {
 						enemy2.stopControls();
 						enemy3.stopControls();
 						enemy4.stopControls();
-						stop = true;
+						stopControls();
 						gameStatus.setText("GAME OVER");
 					}
 				}
@@ -157,7 +157,7 @@ public class Player extends Character {
 						enemy2.stopControls();
 						enemy3.stopControls();
 						enemy4.stopControls();
-						stop = true;
+						stopControls();
 						gameStatus.setText("GAME OVER");
 					}
 				}
@@ -195,7 +195,7 @@ public class Player extends Character {
 						enemy2.stopControls();
 						enemy3.stopControls();
 						enemy4.stopControls();
-						stop = true;
+						stopControls();
 						gameStatus.setText("GAME OVER");
 					}
 				}
@@ -233,7 +233,7 @@ public class Player extends Character {
 						enemy2.stopControls();
 						enemy3.stopControls();
 						enemy4.stopControls();
-						stop = true;
+						stopControls();
 						gameStatus.setText("GAME OVER");
 					}
 					
@@ -244,15 +244,10 @@ public class Player extends Character {
 	}
 	
 	public void controls() {
-		
+		timer.start();
 		stop = false;
 
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-			timer.start();
-			//findPlayer();
-			int r = getR();
-			int c = getC();	
-			System.out.println("****Player: " + r + " " + c);
 			
 			if(stop) {
 				key.consume(); // so key won't be passed to other event listeners.
