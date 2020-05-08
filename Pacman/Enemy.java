@@ -9,7 +9,9 @@ public class Enemy extends Character {
 	private char id;
 	private EnemyControls timer = new EnemyControls();
 	private Player player;
-	private Enemy otherEnemy;
+	private Enemy otherEnemy1;
+	private Enemy otherEnemy2;
+	private Enemy otherEnemy3;
 	private transient Label gameStatus;
 	
 	public Enemy(Map m, String path, char id) {
@@ -17,9 +19,11 @@ public class Enemy extends Character {
 		this.setID(id);
 	}
 	
-	public void setCharacters(Player player, Enemy otherEnemy) {
+	public void setCharacters(Player player, Enemy otherEnemy1, Enemy otherEnemy2, Enemy otherEnemy3) {
 		this.player = player;
-		this.otherEnemy = otherEnemy;
+		this.otherEnemy1 = otherEnemy1;
+		this.otherEnemy2 = otherEnemy2;
+		this.otherEnemy3 = otherEnemy3;
 		gameStatus = player.getGameStatus();
 	}
 	
@@ -60,7 +64,6 @@ public class Enemy extends Character {
 				char direction = randomValidDirection();
 				
 				prevTime = now;
-				System.out.println("Enemy moved");
 				// up
 				if(direction == 'U') {
 					grid[r][c] = currPos;
@@ -121,9 +124,12 @@ public class Enemy extends Character {
 				//else if(grid[][] == 'P') stop timers stop keyboard even
 				else if(grid[r-1][c] == 'P') {
 					stopControls();
-					otherEnemy.stopControls();
+					otherEnemy1.stopControls();
+					otherEnemy2.stopControls();
+					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
+					direction = 'z';
 					break;
 				}
 				
@@ -138,9 +144,12 @@ public class Enemy extends Character {
 				
 				else if(grid[r+1][c] == 'P') {
 					stopControls();
-					otherEnemy.stopControls();
+					otherEnemy1.stopControls();
+					otherEnemy2.stopControls();
+					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
+					direction = 'z';
 					break;
 				}
 				else continue;
@@ -154,9 +163,12 @@ public class Enemy extends Character {
 				
 				else if(grid[r][c-1] == 'P') {
 					stopControls();
-					otherEnemy.stopControls();
+					otherEnemy1.stopControls();
+					otherEnemy2.stopControls();
+					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
+					direction = 'z';
 					break;
 				}
 				
@@ -171,9 +183,12 @@ public class Enemy extends Character {
 				
 				else if(grid[r][c+1] == 'P') {
 					stopControls();
-					otherEnemy.stopControls();
+					otherEnemy1.stopControls();
+					otherEnemy2.stopControls();
+					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
+					direction = 'z';
 					break;
 				}
 				

@@ -16,7 +16,7 @@ public class Map implements Serializable {
 	private char[][] grid;
 	private transient GridPane map = new GridPane();
 	private Player player;
-	private Enemy enemy1, enemy2;
+	private Enemy enemy1, enemy2, enemy3, enemy4;
 	
 	public Map() {
 		grid = new char[ROWS][COLS];
@@ -25,10 +25,12 @@ public class Map implements Serializable {
 		//fillCells();
 	}
 	
-	public void setCharacters(Player player, Enemy enemy1, Enemy enemy2) {
+	public void setCharacters(Player player, Enemy enemy1, Enemy enemy2, Enemy enemy3, Enemy enemy4) {
 		this.player = player;
 		this.enemy1 = enemy1;
 		this.enemy2 = enemy2;
+		this.enemy3 = enemy3;
+		this.enemy4 = enemy4;
 	}
 	
 	public void setGridPane(GridPane g) {
@@ -39,12 +41,7 @@ public class Map implements Serializable {
 	public void fillGridPane() {
 		for(int i = 0; i < ROWS; i++) {
 			for(int j = 0; j < COLS; j++) {
-//				for (Node node : map.getChildren()) {
-//				    if (map.getColumnIndex(node) == (j+1) && map.getRowIndex(node) == (i+1)) {
-//				        map.getChildren().remove(node);
-//				        break;
-//				    }
-//				}
+
 				if(grid[i][j] == 'W') {
 					Item wall = new Wall(CELL_WIDTH);
                     map.add(wall.getImageView(), j+1, i+1);
@@ -70,6 +67,18 @@ public class Map implements Serializable {
 					enemy2.setR(i);
 					enemy2.setC(j);
                     map.add(enemy2.getImageView(), j+1, i+1);
+				}
+				
+				else if(grid[i][j] == '3') {
+					enemy3.setR(i);
+					enemy3.setC(j);
+                    map.add(enemy3.getImageView(), j+1, i+1);
+				}
+				
+				else if(grid[i][j] == '4') {
+					enemy4.setR(i);
+					enemy4.setC(j);
+                    map.add(enemy4.getImageView(), j+1, i+1);
 				}
 				
 				else if(grid[i][j] == 'P') {
@@ -150,6 +159,9 @@ public class Map implements Serializable {
 			
 			player.won();
 		}
+		
+		else
+			player.stillPlaying();
 	}
 	
 	@SuppressWarnings("static-access")
@@ -184,6 +196,18 @@ public class Map implements Serializable {
 			enemy2.setR(i);
 			enemy2.setC(j);
             map.add(enemy2.getImageView(), j+1, i+1);
+		}
+		
+		else if(x == '3') {
+			enemy3.setR(i);
+			enemy3.setC(j);
+            map.add(enemy3.getImageView(), j+1, i+1);
+		}
+		
+		else if(x == '4') {
+			enemy4.setR(i);
+			enemy4.setC(j);
+            map.add(enemy4.getImageView(), j+1, i+1);
 		}
 		
 		else if(x == 'P'){
