@@ -11,8 +11,8 @@ import javafx.scene.layout.GridPane;
 @SuppressWarnings("serial")
 public class Map implements Serializable {
 	private final double CELL_WIDTH = 20.0;
-	private final int ROWS = 21;
-	private final int COLS = 19;
+	private final int ROWS = 13;	// 21
+	private final int COLS = 25;	// 19
 	private char[][] grid;
 	private transient GridPane map = new GridPane();
 	private Player player;
@@ -124,7 +124,7 @@ public class Map implements Serializable {
 		char c;
 		Scanner input;
 		try {
-			input = new Scanner(new File("level.txt"));
+			input = new Scanner(new File("level2.txt"));
 			for(int i = 0; i < ROWS; i++) {
 				for(int j = 0; j < COLS; j++) {
 					c = input.next().charAt(0);
@@ -160,8 +160,8 @@ public class Map implements Serializable {
 			player.won();
 		}
 		
-		else
-			player.stillPlaying();
+//		else
+//			player.stillPlaying();
 	}
 	
 	@SuppressWarnings("static-access")
