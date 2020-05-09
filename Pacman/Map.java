@@ -1,12 +1,12 @@
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.Scanner;
+
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 
 @SuppressWarnings("serial")
 public class Map implements Serializable {
@@ -50,23 +50,13 @@ public class Map implements Serializable {
 				}
 				
 				else if(grid[i][j] == 'S') {
-
-					Item smallDot = new Coin("images//coin.png", CELL_WIDTH);
-                    map.add(smallDot.getImageView(), j+1, i+1);
-				}
-				
-				else if(grid[i][j] == 'B') {
-					Item bigDot = new Coin("images//bigcoin.png", CELL_WIDTH);
-                    map.add(bigDot.getImageView(), j+1, i+1);
-
-					item = new Coin("images//smalldot.png", CELL_WIDTH);
+					item = new Coin("images//coin.png", CELL_WIDTH);
                     map.add(item.getImageView(), j+1, i+1);
 				}
 				
 				else if(grid[i][j] == 'B') {
-					item = new Coin("images//whitedot.png", CELL_WIDTH);
+					item = new Coin("images//bigcoin.png", CELL_WIDTH);
                     map.add(item.getImageView(), j+1, i+1);
-
 				}
 				
 				else if(grid[i][j] == '1') {
@@ -136,7 +126,7 @@ public class Map implements Serializable {
 		char c;
 		Scanner input;
 		try {
-			input = new Scanner(new File("Pacman/level2.txt"));
+			input = new Scanner(new File("level2.txt"));
 			for(int i = 0; i < ROWS; i++) {
 				for(int j = 0; j < COLS; j++) {
 					c = input.next().charAt(0);
@@ -189,21 +179,14 @@ public class Map implements Serializable {
 		        break;
 		    }
 		}
-		///////////////////////////////////////////////change item classes to ()
-		if(x == 'S') {
-			Item smallDot = new Coin("images//coin.png", CELL_WIDTH);
-            map.add(smallDot.getImageView(), j+1, i+1);
-		}
 		
-		else if(x == 'B') {
-			Item bigDot = new Coin("images//bigcoin.png", CELL_WIDTH);
-            map.add(bigDot.getImageView(), j+1, i+1);
-			item = new Coin("images//smalldot.png", CELL_WIDTH);
+		if(x == 'S') {
+			item = new Coin("images//coin.png", CELL_WIDTH);
             map.add(item.getImageView(), j+1, i+1);
 		}
 		
 		else if(x == 'B') {
-			item = new Coin("images//whitedot.png", CELL_WIDTH);
+			item = new Coin("images//bigcoin.png", CELL_WIDTH);
             map.add(item.getImageView(), j+1, i+1);
 		}
 		

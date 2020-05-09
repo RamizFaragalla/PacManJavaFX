@@ -1,13 +1,14 @@
-import javafx.animation.AnimationTimer;
-import javafx.scene.control.Label;
-
 import java.io.Serializable;
 
+import javafx.animation.AnimationTimer;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+
 @SuppressWarnings("serial")
-public class Enemy extends Character { // class that contains all the enemies
+public class Enemy extends Character {
 	
 	private char id;
-	private EnemyControls timer = new EnemyControls();
+	private EnemyTimer timer;
 	private Player player;
 	private Enemy otherEnemy1;
 	private Enemy otherEnemy2;
@@ -17,6 +18,7 @@ public class Enemy extends Character { // class that contains all the enemies
 	public Enemy(Map m, String path, char id) {
 		super(m, path, 0, 0);
 		this.setID(id);
+		timer = new EnemyTimer();
 	}
 	
 	public void setCharacters(Player player, Enemy otherEnemy1, Enemy otherEnemy2, Enemy otherEnemy3) {
@@ -53,8 +55,8 @@ public class Enemy extends Character { // class that contains all the enemies
 		timer.stop();
 	}
 	
-	private class EnemyControls extends AnimationTimer implements Serializable{
-		char grid[][] = getMap().getGrid();
+	private class EnemyTimer extends AnimationTimer implements Serializable{
+		private char grid[][] = getMap().getGrid();
 		private long prevTime = 0;
 		private char currPos = 'E';
 		
@@ -132,6 +134,7 @@ public class Enemy extends Character { // class that contains all the enemies
 					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
+					gameStatus.setTextFill(Color.RED);
 					break;
 				}
 				
@@ -151,6 +154,7 @@ public class Enemy extends Character { // class that contains all the enemies
 					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
+					gameStatus.setTextFill(Color.RED);
 					break;
 				}
 				else continue;
@@ -169,6 +173,7 @@ public class Enemy extends Character { // class that contains all the enemies
 					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
+					gameStatus.setTextFill(Color.RED);
 					break;
 				}
 				
@@ -188,6 +193,7 @@ public class Enemy extends Character { // class that contains all the enemies
 					otherEnemy3.stopControls();
 					player.stopControls();
 					gameStatus.setText("GAME OVER");
+					gameStatus.setTextFill(Color.RED);
 					break;
 				}
 				

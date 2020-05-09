@@ -1,11 +1,11 @@
+import java.io.Serializable;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-
-import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class Player extends Character {
@@ -15,13 +15,15 @@ public class Player extends Character {
 	private transient Label gameStatus;
 	private Enemy enemy1, enemy2, enemy3, enemy4;
 	private transient Scene scene;
-	private char dir = 'R';
-	private PlayerTimer timer = new PlayerTimer();
+	private char dir;
+	private PlayerTimer timer;
 	
 	public Player(Map m) {
 		super(m, "images//pacmanRight.gif", 0, 0);
 		setPoints(0);
 		stop = false;
+		dir = 'D';
+		timer = new PlayerTimer();
 	}
 	
 	public void setEnemies(Enemy one, Enemy two, Enemy three, Enemy four) {
@@ -48,7 +50,7 @@ public class Player extends Character {
 		this.points = points;
 	}
 	
-	public void setLabels(Label score, Label gameStatus) { //Set score and gamestatus
+	public void setLabels(Label score, Label gameStatus) {
 		this.score = score;
 		this.gameStatus = gameStatus;
 	}
@@ -62,18 +64,13 @@ public class Player extends Character {
 		timer.stop();
 	}
 	
-	
 	public void won() {
 		gameStatus.setText("YOU WON");
 		gameStatus.setTextFill(Color.GREEN);
 	}
 	
-	public void stillPlaying() {
-		gameStatus.setText("");
-	}
-	
 	private class PlayerTimer extends AnimationTimer implements Serializable{
-		char grid[][] = getMap().getGrid();
+		private char grid[][] = getMap().getGrid();
 		private long prevTime = 0;
 		
 		public void handle(long now) {
@@ -121,6 +118,7 @@ public class Player extends Character {
 						enemy4.stopControls();
 						stopControls();
 						gameStatus.setText("GAME OVER");
+						gameStatus.setTextFill(Color.RED);
 					}
 				}
 				
@@ -159,6 +157,7 @@ public class Player extends Character {
 						enemy4.stopControls();
 						stopControls();
 						gameStatus.setText("GAME OVER");
+						gameStatus.setTextFill(Color.RED);
 					}
 				}
 				
@@ -197,6 +196,7 @@ public class Player extends Character {
 						enemy4.stopControls();
 						stopControls();
 						gameStatus.setText("GAME OVER");
+						gameStatus.setTextFill(Color.RED);
 					}
 				}
 				
@@ -235,6 +235,7 @@ public class Player extends Character {
 						enemy4.stopControls();
 						stopControls();
 						gameStatus.setText("GAME OVER");
+						gameStatus.setTextFill(Color.RED);
 					}
 					
 				}
@@ -250,7 +251,7 @@ public class Player extends Character {
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 			
 			if(stop) {
-				key.consume(); // so key won't be passed to other event listeners.
+				key.consume();
 				return;
 			}
 			

@@ -1,3 +1,11 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -6,17 +14,19 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.*;
-
 public class Pacman extends Application {
-	private Map m = new Map(); // create the new map
-	private Player player = new Player(m); // create the new player
-	private GridPane map = m.getGridPane(); // return the map + assign it to map
+	private Map m = new Map();
+	private Player player = new Player(m);
+	private GridPane map = m.getGridPane();
 	
 	private Enemy enemy1 = new Enemy(m, "images//blue.png", '1');
 	private Enemy enemy2 = new Enemy(m, "images//pinky.png", '2');
@@ -38,14 +48,14 @@ public class Pacman extends Application {
 	public void start(Stage primaryStage) {
 		
 		
-		player.setLabels(score, gameStatus); // set the score and the status of the game
-		enemy1.setCharacters(player, enemy2, enemy3, enemy4); // set the characters for each one, so they can get access to each other.
+		player.setLabels(score, gameStatus);
+		enemy1.setCharacters(player, enemy2, enemy3, enemy4);
 		enemy2.setCharacters(player, enemy1, enemy3, enemy4);
 		enemy3.setCharacters(player, enemy1, enemy2, enemy4);
 		enemy4.setCharacters(player, enemy1, enemy2, enemy3);
 		
 	
-		player.setEnemies(enemy1, enemy2, enemy3, enemy4); //so the player has access to enemies
+		player.setEnemies(enemy1, enemy2, enemy3, enemy4);
 		
 		m.setCharacters(player, enemy1, enemy2, enemy3, enemy4);
 		m.fillGridPane();
@@ -53,16 +63,16 @@ public class Pacman extends Application {
 		
 		
 		fileSystem(primaryStage);
-		hBox = new HBox(score, gameStatus); // hbx for the score
+		hBox = new HBox(score, gameStatus);
 		vBox = new VBox(borderPane, hBox, map);
 		vBox.setBackground(Background.EMPTY);
 		gameStatus.setTextFill(Color.RED);
 		score.setTextFill(Color.web("#ffffff"));
-		scene = new Scene(vBox, Color.BLACK); // not sure
+		scene = new Scene(vBox, Color.BLACK);
 		
 		player.setScene(scene);
 		player.controls();
-		enemy1.controls(); // starts the timer for the enemy
+		enemy1.controls();
 		enemy2.controls();
 		enemy3.controls();
 		enemy4.controls();
@@ -193,8 +203,8 @@ public class Pacman extends Application {
 	    		   System.out.println("***" + player.getR() + "*" + player.getC());
 	    		   //enemy1.setMap(m);
 	    		   
-	    		   Enemy enemy1 = new Enemy(m, "images//pinky.png", '1');
-	    		   Enemy enemy2 = new Enemy(m, "images//blue.png", '2');
+	    		   Enemy enemy1 = new Enemy(m, "images//blue.png", '1');
+	    		   Enemy enemy2 = new Enemy(m, "images//pinky.png", '2');
 	    		   Enemy enemy3 = new Enemy(m, "images//ghost2.gif", '3');
 	    		   Enemy enemy4 = new Enemy(m, "images//redghost.gif", '4');
 	    		   enemy1.setCharacters(player, enemy2, enemy3, enemy4);
@@ -216,7 +226,7 @@ public class Pacman extends Application {
 	    		   enemy4.controls();
 	    		   
 	    		   
-	    		   if(gameStatus.getText().equals("GAME OVER"))
+	    		   if(gameStatus.getText().equals("GAME OVER") || gameStatus.getText().equals("YOU WON"))
 	    			   gameStatus.setText("");
 	    		   
 	    		   player.setLabels(score, gameStatus);

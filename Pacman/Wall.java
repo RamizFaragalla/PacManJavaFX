@@ -1,9 +1,12 @@
+import java.io.Serializable;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Wall implements Item {
-	private Image image;
-	private ImageView imageView;
+@SuppressWarnings("serial")
+public class Wall implements Item, Serializable{
+	private transient Image image;
+	private transient ImageView imageView;
 	
 	public Wall(double w) {
 		image = new Image("images//wall.png");
