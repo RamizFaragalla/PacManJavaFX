@@ -157,6 +157,8 @@ public class Map implements Serializable {
 		if(won()) {
 			enemy1.stopControls();
 			enemy2.stopControls();
+			enemy3.stopControls();
+			enemy4.stopControls();
 			player.stopControls();
 			
 			player.won();
