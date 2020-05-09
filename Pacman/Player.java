@@ -15,13 +15,15 @@ public class Player extends Character {
 	private transient Label gameStatus;
 	private Enemy enemy1, enemy2, enemy3, enemy4;
 	private transient Scene scene;
-	private char dir = 'R';
-	private PlayerTimer timer = new PlayerTimer();
+	private char dir;
+	private PlayerTimer timer;
 	
 	public Player(Map m) {
 		super(m, "images//pacmanRight.gif", 0, 0);
 		setPoints(0);
 		stop = false;
+		dir = 'D';
+		timer = new PlayerTimer();
 	}
 	
 	public void setEnemies(Enemy one, Enemy two, Enemy three, Enemy four) {
@@ -62,18 +64,13 @@ public class Player extends Character {
 		timer.stop();
 	}
 	
-	
 	public void won() {
 		gameStatus.setText("YOU WON");
 		gameStatus.setTextFill(Color.GREEN);
 	}
 	
-	public void stillPlaying() {
-		gameStatus.setText("");
-	}
-	
 	private class PlayerTimer extends AnimationTimer implements Serializable{
-		char grid[][] = getMap().getGrid();
+		private char grid[][] = getMap().getGrid();
 		private long prevTime = 0;
 		
 		public void handle(long now) {
