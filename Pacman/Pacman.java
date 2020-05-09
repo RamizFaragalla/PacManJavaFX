@@ -18,8 +18,8 @@ public class Pacman extends Application {
 	private Player player = new Player(m); // create the new player
 	private GridPane map = m.getGridPane(); // return the map + assign it to map
 	
-	private Enemy enemy1 = new Enemy(m, "images//ghost1.gif", '1');
-	private Enemy enemy2 = new Enemy(m, "images//ghost3.gif", '2');
+	private Enemy enemy1 = new Enemy(m, "images//blue.png", '1');
+	private Enemy enemy2 = new Enemy(m, "images//pinky.png", '2');
 	private Enemy enemy3 = new Enemy(m, "images//ghost2.gif", '3');
 	private Enemy enemy4 = new Enemy(m, "images//redghost.gif", '4');
 	
@@ -193,8 +193,8 @@ public class Pacman extends Application {
 	    		   System.out.println("***" + player.getR() + "*" + player.getC());
 	    		   //enemy1.setMap(m);
 	    		   
-	    		   Enemy enemy1 = new Enemy(m, "images//ghost2.gif", '1');
-	    		   Enemy enemy2 = new Enemy(m, "images//redghost.gif", '2');
+	    		   Enemy enemy1 = new Enemy(m, "images//pinky.png", '1');
+	    		   Enemy enemy2 = new Enemy(m, "images//blue.png", '2');
 	    		   Enemy enemy3 = new Enemy(m, "images//ghost2.gif", '3');
 	    		   Enemy enemy4 = new Enemy(m, "images//redghost.gif", '4');
 	    		   enemy1.setCharacters(player, enemy2, enemy3, enemy4);
