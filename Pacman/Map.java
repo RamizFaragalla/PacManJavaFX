@@ -14,12 +14,14 @@ public class Map implements Serializable {
 	private final int ROWS = 13;	// 21 13
 	private final int COLS = 25;	// 19 25
 	private char[][] grid;
-	private transient GridPane map = new GridPane();
+	private transient GridPane map;
 	private Player player;
 	private Enemy enemy1, enemy2, enemy3, enemy4;
+	private Item item;
 	
 	public Map() {
 		grid = new char[ROWS][COLS];
+		map = new GridPane();
 		//cells = new ImageView[ROWS][COLS];
 		fillGrid();
 		//fillCells();
@@ -43,11 +45,12 @@ public class Map implements Serializable {
 			for(int j = 0; j < COLS; j++) {
 
 				if(grid[i][j] == 'W') {
-					Item wall = new Wall(CELL_WIDTH);
-                    map.add(wall.getImageView(), j+1, i+1);
+					item = new Wall(CELL_WIDTH);
+                    map.add(item.getImageView(), j+1, i+1);
 				}
 				
 				else if(grid[i][j] == 'S') {
+
 					Item smallDot = new Coin("images//coin.png", CELL_WIDTH);
                     map.add(smallDot.getImageView(), j+1, i+1);
 				}
@@ -55,6 +58,15 @@ public class Map implements Serializable {
 				else if(grid[i][j] == 'B') {
 					Item bigDot = new Coin("images//bigcoin.png", CELL_WIDTH);
                     map.add(bigDot.getImageView(), j+1, i+1);
+
+					item = new Coin("images//smalldot.png", CELL_WIDTH);
+                    map.add(item.getImageView(), j+1, i+1);
+				}
+				
+				else if(grid[i][j] == 'B') {
+					item = new Coin("images//whitedot.png", CELL_WIDTH);
+                    map.add(item.getImageView(), j+1, i+1);
+
 				}
 				
 				else if(grid[i][j] == '1') {
@@ -89,12 +101,12 @@ public class Map implements Serializable {
 				}
 				
 				else {
-					Item empty = new Empty(CELL_WIDTH);
+					item = new Empty(CELL_WIDTH);
 //                    imageView.setX((double)j * m.getWidth());
 //                    imageView.setY((double)i * m.getWidth());
 //                    imageView.setFitWidth(m.getWidth());
 //                    imageView.setFitHeight(m.getWidth());
-                    map.add(empty.getImageView(), j+1, i+1);
+                    map.add(item.getImageView(), j+1, i+1);
 				}
 			}
 		}
@@ -155,6 +167,8 @@ public class Map implements Serializable {
 		if(won()) {
 			enemy1.stopControls();
 			enemy2.stopControls();
+			enemy3.stopControls();
+			enemy4.stopControls();
 			player.stopControls();
 			
 			player.won();
@@ -165,7 +179,7 @@ public class Map implements Serializable {
 	}
 	
 	@SuppressWarnings("static-access")
-	public void updateHelper(int i, int j, int x, String orientation) {
+	private void updateHelper(int i, int j, int x, String orientation) {
 		
 //		map.getChildren().remove(j+1, i+1);
 		//remove node
@@ -184,6 +198,13 @@ public class Map implements Serializable {
 		else if(x == 'B') {
 			Item bigDot = new Coin("images//bigcoin.png", CELL_WIDTH);
             map.add(bigDot.getImageView(), j+1, i+1);
+			item = new Coin("images//smalldot.png", CELL_WIDTH);
+            map.add(item.getImageView(), j+1, i+1);
+		}
+		
+		else if(x == 'B') {
+			item = new Coin("images//whitedot.png", CELL_WIDTH);
+            map.add(item.getImageView(), j+1, i+1);
 		}
 		
 		else if(x == '1') {
@@ -220,9 +241,8 @@ public class Map implements Serializable {
 		}
 		
 		else {
-			Item empty = new Empty(CELL_WIDTH);
-			ImageView imageView = empty.getImageView();
-            map.add(imageView, j+1, i+1);
+			item = new Empty(CELL_WIDTH);
+            map.add(item.getImageView(), j+1, i+1);
 		}
 		
 	}
