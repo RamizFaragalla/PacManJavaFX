@@ -1,18 +1,18 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
-import java.util.Scanner;
-
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.Serializable;
+import java.util.Scanner;
+
 @SuppressWarnings("serial")
 public class Map implements Serializable {
 	private final double CELL_WIDTH = 20.0;
-	private final int ROWS = 13;	// 21
-	private final int COLS = 25;	// 19
+	private final int ROWS = 13;	// 21 13
+	private final int COLS = 25;	// 19 25
 	private char[][] grid;
 	private transient GridPane map = new GridPane();
 	private Player player;
@@ -48,12 +48,12 @@ public class Map implements Serializable {
 				}
 				
 				else if(grid[i][j] == 'S') {
-					Item smallDot = new Coin("images//smalldot.png", CELL_WIDTH);
+					Item smallDot = new Coin("images//coin.png", CELL_WIDTH);
                     map.add(smallDot.getImageView(), j+1, i+1);
 				}
 				
 				else if(grid[i][j] == 'B') {
-					Item bigDot = new Coin("images//whitedot.png", CELL_WIDTH);
+					Item bigDot = new Coin("images//bigcoin.png", CELL_WIDTH);
                     map.add(bigDot.getImageView(), j+1, i+1);
 				}
 				
@@ -124,7 +124,7 @@ public class Map implements Serializable {
 		char c;
 		Scanner input;
 		try {
-			input = new Scanner(new File("level2.txt"));
+			input = new Scanner(new File("Pacman/level2.txt"));
 			for(int i = 0; i < ROWS; i++) {
 				for(int j = 0; j < COLS; j++) {
 					c = input.next().charAt(0);
@@ -177,12 +177,12 @@ public class Map implements Serializable {
 		}
 		///////////////////////////////////////////////change item classes to ()
 		if(x == 'S') {
-			Item smallDot = new Coin("images//smalldot.png", CELL_WIDTH);
+			Item smallDot = new Coin("images//coin.png", CELL_WIDTH);
             map.add(smallDot.getImageView(), j+1, i+1);
 		}
 		
 		else if(x == 'B') {
-			Item bigDot = new Coin("images//whitedot.png", CELL_WIDTH);
+			Item bigDot = new Coin("images//bigcoin.png", CELL_WIDTH);
             map.add(bigDot.getImageView(), j+1, i+1);
 		}
 		
