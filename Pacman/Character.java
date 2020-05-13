@@ -4,11 +4,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 @SuppressWarnings("serial")
-public abstract class Character implements Serializable{
-	private transient Image image;
-	private transient ImageView imageView;
-	private int r;
-	private int c;
+public abstract class Character implements Serializable {
+	private transient Image image;	// image of the character
+	private transient ImageView imageView;	// image view for GridPane
+	private int r;	// row position for the character
+	private int c;	// column position for the character
 	
 	private Map m;
 	
@@ -22,27 +22,48 @@ public abstract class Character implements Serializable{
 		setC(c);
 	}
 	
-	public abstract void controls();
-	public abstract void stopControls();
+	/**
+	 * method allows for the movement of a character on the map
+	 */
+	public abstract void controls();	// starts the controls of the character
 	
+	/**
+	 * method stops the movement of a character
+	 */
+	public abstract void stopControls();	// stops the controls of the character
+	
+	/**
+	 * accessor method for the Map object
+	 * @param none
+	 * @return m an object of the Map class
+	 */
 	public Map getMap() {
 		return m;
 	}
 	
+	/**
+	 * mutator method for the Map object
+	 * @param m an object of the Map class
+	 * @return void
+	 */
 	public void setMap(Map m) {
 		this.m = m;
 	}
 	
-	//public abstract void controls(Scene scene);
 	/**
-	 * @return the imageView
+	 * accessor method for the ImageView object
+	 * @param none
+	 * @return imageView an ImageView object
 	 */
 	public ImageView getImageView() {
 		return imageView;
 	}
 
 	/**
-	 * @param imageView the imageView to set
+	 * mutator method for the ImageView object
+	 * @param imageView imageView to set
+	 * @param w a double, the width and height of imageView
+	 * @return void
 	 */
 	public void setImageView(ImageView imageView, double w) {
 		this.imageView = imageView;
@@ -51,30 +72,36 @@ public abstract class Character implements Serializable{
 	}
 
 	/**
-	 * @return the row position
+	 * accessor for the row position
+	 * @param none
+	 * @return r an int for the row position 
 	 */
 	public int getR() {
 		return r;
 	}
 
 	/**
-	 * 
-	 * @param row set the row position
+	 * mutator for the row position
+	 * @param row an int to set the row position
+	 * @return void
 	 */
 	public void setR(int row) {
 		this.r = row;
 	}
 
 	/**
-	 * @return the column position
+	 * accessor for the column position
+	 * @param none
+	 * @return c an int for the column position
 	 */
 	public int getC() {
 		return c;
 	}
 
 	/**
-	 * 
-	 * @param column set the column position
+	 * mutator for the column position 
+	 * @param column an int to set the column position
+	 * @return void
 	 */
 	public void setC(int column) {
 		this.c = column;

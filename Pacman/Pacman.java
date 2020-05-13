@@ -24,7 +24,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class Pacman extends Application {
-	private Map m = new Map();
+	private Map m = new Map();	
 	private Player player = new Player(m);
 	private GridPane map = m.getGridPane();
 	
@@ -33,9 +33,9 @@ public class Pacman extends Application {
 	private Enemy enemy3 = new Enemy(m, "images//ghost2.gif", '3');
 	private Enemy enemy4 = new Enemy(m, "images//redghost.gif", '4');
 	
-	private VBox vBox;
-	private HBox hBox;
-	private BorderPane borderPane;
+	private VBox vBox;	// vBox stores a menu, an HBOX, and the GridPane
+	private HBox hBox;	// stores the labels
+	private BorderPane borderPane;	// the menu
 	private Scene scene;
 	private Label score = new Label("Score: " + Integer.toString(player.getPoints()));
 	private Label gameStatus = new Label("");
@@ -45,32 +45,35 @@ public class Pacman extends Application {
 	      launch(args);
 	}
 
+	/**
+	 * method starts the GUI
+	 * @param primaryStage a Stage object
+	 * @return void
+	 */
 	public void start(Stage primaryStage) {
-		
-		
+		// set the characters and map of all the objects
 		player.setLabels(score, gameStatus);
 		enemy1.setCharacters(player, enemy2, enemy3, enemy4);
 		enemy2.setCharacters(player, enemy1, enemy3, enemy4);
 		enemy3.setCharacters(player, enemy1, enemy2, enemy4);
 		enemy4.setCharacters(player, enemy1, enemy2, enemy3);
-		
 	
 		player.setEnemies(enemy1, enemy2, enemy3, enemy4);
 		
 		m.setCharacters(player, enemy1, enemy2, enemy3, enemy4);
 		m.fillGridPane();
-		//m.getGridPane().setBackground(Background.EMPTY);
 		
+		fileSystem(primaryStage);	// load / save game menu options
 		
-		fileSystem(primaryStage);
-		hBox = new HBox(score, gameStatus);
-		vBox = new VBox(borderPane, hBox, map);
+		hBox = new HBox(score, gameStatus);	// labels in hBox
+		vBox = new VBox(borderPane, hBox, map);	// menu, hBox, GridPane in vBox
 		vBox.setBackground(Background.EMPTY);
-		gameStatus.setTextFill(Color.RED);
 		score.setTextFill(Color.web("#ffffff"));
 		scene = new Scene(vBox, Color.BLACK);
 		
 		player.setScene(scene);
+		
+		// start controls of all the characters
 		player.controls();
 		enemy1.controls();
 		enemy2.controls();
@@ -86,6 +89,11 @@ public class Pacman extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * load / save functionality 
+	 * @param primaryStage a Stage
+	 * @return void
+	 */
 	public void fileSystem(Stage primaryStage) {
 		// Create the menu bar.
 		MenuBar menuBar = new MenuBar();
@@ -101,11 +109,12 @@ public class Pacman extends Application {
 		fileMenu.getItems().add(btnNewGame);
 
 		
-		// Register an event handler for the exit item.
+		// if save is pressed
 	    save.setOnAction(event ->
 	    {
 	    	try {
 	    		
+	    		// stop the controls of all the characters
 	    		player.stopControls();
 		    	enemy1.stopControls();
 		    	enemy2.stopControls();
@@ -121,6 +130,7 @@ public class Pacman extends Application {
 	    			fileName = file.getAbsolutePath();
 	    		}
 	    		else {
+	    			// if file wasn't chosen resume controls
 	    			player.controls();
     	   		   	enemy1.controls();
 	    		   	enemy2.controls();
@@ -131,6 +141,7 @@ public class Pacman extends Application {
 	    		
 	    		ObjectOutputStream saveGame = new ObjectOutputStream(new FileOutputStream(fileName));
 				
+	    		// write the objects to the file
 	    		saveGame.writeObject(m); // save map
 	    		saveGame.writeObject(player); // save the player info
 	    	    
@@ -142,6 +153,7 @@ public class Pacman extends Application {
 				e.printStackTrace();
 			}
 	    	
+	    	// resume controls after saving the objects to the file
    		    player.controls();
 		    enemy1.controls();
 		    enemy2.controls();
@@ -150,15 +162,18 @@ public class Pacman extends Application {
 	
 	    });
 	    
+	    // if btnNewGame is pressed, restart the application to start a new game
 		btnNewGame.setOnAction( e -> {
 			System.out.println( "Restarting app!" );
 			primaryStage.close();
 			Platform.runLater(() -> new Pacman().start(new Stage()));
         });
 	    
+		// if load button is pressed
 	    load.setOnAction(event ->
 	    {
 	       try {
+	    	   // stop the controls 
 	    	   player.stopControls();
 	    	   enemy1.stopControls();
 	    	   enemy2.stopControls();
@@ -175,6 +190,7 @@ public class Pacman extends Application {
 	    		   fileName = selectedFile.getPath();
 	    	   }
 	    	   else {
+	    		   // if file wasn't chosen resume controls
 	    		   player.controls();
 	    		   enemy1.controls();
 	    		   enemy2.controls();
@@ -186,22 +202,19 @@ public class Pacman extends Application {
 	    	   ObjectInputStream loadGame = new ObjectInputStream(new FileInputStream(fileName));
 	    	   
 	    	   try {
+	    		   // read the objects back from the file
 	    		   m = (Map)loadGame.readObject();
 	    		   player = (Player)loadGame.readObject();
-	    		   
 
 	    		   score.setText(("Score: " + Integer.toString(player.getPoints())));
-	    		   m.won();
 	    		   
 	    		   // add to player
 	    		   ImageView imageView = new ImageView("images//pacmanRight.gif");
 	    		   player.setImageView(imageView, m.getWidth());
 	    		   player.setScene(scene);
 	    		   
-	    		   //player.setLabels(score, gameStatus);
 	    		   player.setMap(m);
 	    		   System.out.println("***" + player.getR() + "*" + player.getC());
-	    		   //enemy1.setMap(m);
 	    		   
 	    		   Enemy enemy1 = new Enemy(m, "images//blue.png", '1');
 	    		   Enemy enemy2 = new Enemy(m, "images//pinky.png", '2');
@@ -225,8 +238,8 @@ public class Pacman extends Application {
 	    		   enemy3.controls();
 	    		   enemy4.controls();
 	    		   
-	    		   
-	    		   if(gameStatus.getText().equals("GAME OVER") || gameStatus.getText().equals("YOU WON"))
+	    		   // if game was originally over, set label back to ""
+	    		   if(gameStatus.getText().equals(" GAME OVER") || gameStatus.getText().equals(" YOU WON"))
 	    			   gameStatus.setText("");
 	    		   
 	    		   player.setLabels(score, gameStatus);
@@ -235,8 +248,6 @@ public class Pacman extends Application {
 	    		   enemy3.setGameStatus(gameStatus);
 	    		   enemy4.setGameStatus(gameStatus);
 	    		   System.out.println("Game Loaded");
-	    		   
-
 	    		   
 	    		   
 	    	   } catch (ClassNotFoundException e) {

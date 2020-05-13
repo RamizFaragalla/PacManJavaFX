@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 
 @SuppressWarnings("serial")
 public class Wall implements Item, Serializable{
-	private transient Image image;
+	private transient Image image;		// image of the wall
 	private transient ImageView imageView;
 	
 	public Wall(double w) {
@@ -16,14 +16,18 @@ public class Wall implements Item, Serializable{
 	}
 
 	/**
-	 * @return the imageView
+	 * accessor method to get the ImageView object
+	 * @param none
+	 * @return imageView an ImageView object
 	 */
 	public ImageView getImageView() {
 		return imageView;
 	}
 
 	/**
-	 * @param imageView the imageView to set
+	 * mutator to set the ImageView object
+	 * @param imageView an ImageView object
+	 * @return void
 	 */
 	public void setImageView(ImageView imageView) {
 		this.imageView = imageView;
