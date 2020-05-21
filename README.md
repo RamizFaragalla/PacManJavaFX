@@ -14,11 +14,13 @@ Character (abstract class):
   - has abstract controls() and stopControls()
   
   1. Player Class extends Character:
+  
     - has keyevent handler for controls
     - has an inner class that implements AnimationTimer to allow for continous movement of the Pacman once a direction is choosen
     - has points counter to keep track of score
   
   2. Enemy Class extends Character:
+  
     - has an inner class that implements AnimationTimer (enemies make a move every 0.3 of a sec)
     - basic enemy ai chooses a random valid direction (direction that doesn't have a wall or another enemy)
 
