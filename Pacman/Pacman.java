@@ -63,7 +63,7 @@ public class Pacman extends Application {
 		m.setCharacters(player, enemy1, enemy2, enemy3, enemy4);
 		m.fillGridPane();
 		
-		fileSystem(primaryStage);	// load / save game menu options
+		fileSystem(primaryStage);	// load/save game menu options
 		
 		hBox = new HBox(score, gameStatus);	// labels in hBox
 		vBox = new VBox(borderPane, hBox, map);	// menu, hBox, GridPane in vBox
@@ -73,7 +73,7 @@ public class Pacman extends Application {
 		
 		player.setScene(scene);
 		
-		// start controls of all the characters
+		//	start controls of all the characters
 		player.controls();
 		enemy1.controls();
 		enemy2.controls();
@@ -90,7 +90,7 @@ public class Pacman extends Application {
 	}
 
 	/**
-	 * load / save functionality 
+	 * load / save functionality and difficulty
 	 * @param primaryStage a Stage
 	 * @return void
 	 */
@@ -98,15 +98,23 @@ public class Pacman extends Application {
 		// Create the menu bar.
 		MenuBar menuBar = new MenuBar();
 	 
-			// Create the File menu.
+		// Create the File menu.
 		Menu fileMenu = new Menu("Game");
 		MenuItem save = new MenuItem("Save Game");
 		MenuItem load = new MenuItem("Load Game");
 		MenuItem btnNewGame = new MenuItem("Restart Game");
+		
+		// create difficulty menue
+		Menu difficulty = new Menu("Difficulty");
+		MenuItem easy = new MenuItem("Easy");
+		MenuItem hard = new MenuItem("Hard");
 
 		fileMenu.getItems().add(save);
 		fileMenu.getItems().add(load);
 		fileMenu.getItems().add(btnNewGame);
+		
+		difficulty.getItems().add(easy);
+		difficulty.getItems().add(hard);
 
 		
 		// if save is pressed
@@ -262,10 +270,18 @@ public class Pacman extends Application {
 	       load.setOnAction(null);
 	    });
 	    
+	    // if easy is pressed
+	    easy.setOnAction(e -> {
+	    	player.easy();
+	    });
 	    
+	    // if hard is pressed
+	    hard.setOnAction(e -> {
+	    	player.hard();
+	    });
 	
 	    // Add the File menu to the menu bar.
-	    menuBar.getMenus().addAll(fileMenu);
+	    menuBar.getMenus().addAll(fileMenu, difficulty);
 	    
 	    // Add the menu bar to a BorderPane.
 	    borderPane = new BorderPane();

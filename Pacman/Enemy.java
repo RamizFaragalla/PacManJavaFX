@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
@@ -103,7 +105,13 @@ public class Enemy extends Character {
 			if(dt > 0.3e9) {	// only runs every 0.3 of a second
 				int r = getR();	// enemy location
 				int c = getC();
-				char direction = randomValidDirection();	// random valid direction that the enemy will move in
+				char direction;
+
+				if(player.isEasy())	// if difficulty is easy get a random direction
+					direction = randomValidDirection();	// random valid direction that the enemy will move in
+				
+				// if difficulty is hard
+				else direction = shortestPathDirection();	// using BFS algorithm
 				
 				prevTime = now;
 				// up
@@ -144,6 +152,136 @@ public class Enemy extends Character {
 			}
 		}
 	}
+	
+	// inner class represents a cell on the 2D array
+	private class Cell implements Comparable<Cell> {
+		int x; 
+		int y;
+		int dist;
+		Cell prev;
+		
+		Cell(int x, int y, int dist, Cell prev) {
+			this.x = x;
+			this.y = y;
+			this.dist = dist;
+			this.prev = prev;
+		}
+		
+		public int compareTo(Cell other) {
+			return dist - other.dist;
+		}
+		
+        public String toString(){
+        	return "("+x+ ","+y+")";
+        }
+	}
+	
+	// breadth first search
+	private char shortestPathDirection() {
+		Cell[][] cells = new Cell[getMap().getRows()][getMap().getCols()];
+		char[][] grid = getMap().getGrid();
+
+		// assign only NULL to cells with a wall
+		for(int i = 0; i < getMap().getRows(); i++) {
+			for(int j = 0; j < getMap().getCols(); j++) {
+				if(grid[i][j] != 'W')
+					cells[i][j] = new Cell(i, j, Integer.MAX_VALUE, null);
+			}
+		}
+		
+		Queue<Cell> queue = new LinkedList<>();
+		Cell src = cells[getR()][getC()];
+		src.dist = 0;
+		queue.add(src);	// add the src (enemy) to the queue
+		Cell dest = null;
+		Cell curr;
+		// while the queue is not empty
+        while ((curr = queue.poll()) != null) {
+        	// if curr postition is the player, break
+            if (curr.x == player.getR() && curr.y == player.getC()) {
+                dest = curr;
+                break;
+            }
+            // visit all neighbouring cells (top, button, left, right)
+            visit(cells, queue, curr.x - 1, curr.y, curr);
+            visit(cells, queue, curr.x + 1, curr.y, curr);
+            visit(cells, queue, curr.x, curr.y - 1, curr);
+            visit(cells, queue, curr.x, curr.y + 1, curr);
+        }
+        
+        // if it's impossible to reach the destination
+        // this will never happen, it's good for safetly 
+        if (dest == null) {
+            return randomValidDirection();
+        } else {
+        	// constructing the path by retracing the moves that were made
+            LinkedList<Cell> path = new LinkedList<>();
+            curr = dest;
+            
+            do {
+                path.addFirst(curr);
+            } while ((curr = curr.prev) != null);
+
+            // remove first position because it's the position of the enemey
+            path.remove();
+            
+            // get the next position
+            Cell next = path.peek();
+            // if that position contains a Pacman, game over
+            if(grid[next.x][next.y] == 'P' ) {
+				// stop all the controls, Game Over
+				stopControls();
+				otherEnemy1.stopControls();
+				otherEnemy2.stopControls();
+				otherEnemy3.stopControls();
+				player.stopControls();
+				gameStatus.setText(" GAME OVER");
+				gameStatus.setTextFill(Color.RED);
+				return 'z';
+            }
+            
+            // if position contains another enemy, pick a random direction
+            // prevents enemy collisions 
+            else if(grid[next.x][next.y] > '0' && grid[next.x][next.y] < '9')
+            	return randomValidDirection();
+            
+            // else return the direction 
+            else {
+            	if(getR() - next.x == -1)
+            		return 'D';
+            	
+            	else if(getR() - next.x == 1) 
+            		return 'U';
+            	
+            	else if(getC() - next.y == -1)
+            		return 'R';
+            	
+            	else return 'L';
+            			
+            }
+        }
+        
+	}
+	
+    private void visit(Cell[][] cells, Queue<Cell> queue, int x, int y, Cell parent) {
+        int dist = parent.dist + 1;
+
+        // if direction is invalid
+        if (x < 0 || x >= cells.length || y < 0 || y >= cells[0].length || cells[x][y] == null) {
+            return;
+        }
+
+        // else if distance < original dist of the cell
+        // change the data of that cell
+        Cell curr = cells[x][y];
+        if (dist < curr.dist) {
+            curr.dist = dist;
+            curr.prev = parent;
+            queue.add(curr);
+        }
+    }
+
+	
 	
 	/**
 	 * method chooses a random valid direction for the enemy to move in

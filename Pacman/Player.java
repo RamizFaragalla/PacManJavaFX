@@ -17,6 +17,7 @@ public class Player extends Character {
 	private transient Scene scene;			// used for the key events
 	private char dir;						// dir Pacman is moving in
 	private PlayerTimer timer;				// PlayerTimer object for continuous movement 
+	private boolean isEasy = true;			// current difficulty, starts as easy
 	
 	public Player(Map m) {
 		super(m, "images//pacmanRight.gif", 0, 0);
@@ -96,6 +97,22 @@ public class Player extends Character {
 	public void stopControls() {
 		stop = true;	// stops key events
 		timer.stop();	// stops the timer
+	}
+	
+	// this method makes the difficulty easy
+	public void easy() {
+		isEasy = true;
+	}
+	
+	// this method makes the difficulty hard
+	public void hard() {
+		isEasy = false;
+	}
+	
+
+	// returns the current difficulty of the game
+	public Boolean isEasy() {
+		return isEasy;
 	}
 	
 	/**
