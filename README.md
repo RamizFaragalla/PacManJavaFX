@@ -1,4 +1,4 @@
-# PacManJavaFX with BFS Algorithm
+# PacManJavaFX
 In this group project, we made the game Pacman using JavaFX.
 The main classes that we had were Map and Character.
 The player can choose the difficulty of the game (easy or hard). Easy will make the enemy move randomly. However, hard will make the enemy move in the shortest path to Pacman using the Breadth First Search algorithm. 
