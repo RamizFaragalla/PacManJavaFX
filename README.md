@@ -1,6 +1,7 @@
 # PacManJavaFX
 In this group project, we made the game Pacman using JavaFX.
-The main classes that we had were Map and Character
+The main classes that we had were Map and Character.
+The player can choose the difficulty of the game (easy or hard). Easy will make the enemy move randomly. However, hard will make the enemy move in the shortest path to Pacman using the Breadth First Search algorithm. 
 
 Map class:
   - had a 2D char array that was read from a txt file
@@ -20,7 +21,8 @@ Character (abstract class):
   
   2. Enemy Class extends Character:
       - has an inner class that implements AnimationTimer (enemies make a move every 0.3 of a sec)
-      - basic enemy ai chooses a random valid direction (direction that doesn't have a wall or another enemy)
+      - easy enemy ai chooses a random valid direction (direction that doesn't have a wall or another enemy)
+      - hard enemy ai will choose the direction that is in the shortest path to the player using BFS. Every 0.3 of a sec, each enemy      recalculates the current shortest path to the player.
 
 Once the Pacman collides with an enemy or all the points are taken, then the controls of the characters stop and Game Over label appears.
 
