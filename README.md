@@ -3,6 +3,8 @@ In this group project, we made the game Pacman using JavaFX.
 The main classes that we had were Map and Character.
 The player can choose the difficulty of the game (easy or hard). Easy will make the enemy move randomly. However, hard will make the enemy move in the shortest path to Pacman using the Breadth First Search algorithm. 
 
+![1](https://github.com/RamizFaragalla/PacManJavaFX/blob/master/gameScreenshot.PNG)
+
 Map class:
   - had a 2D char array that was read from a txt file
   - each character represents an item on the map (ex: W = wall)
